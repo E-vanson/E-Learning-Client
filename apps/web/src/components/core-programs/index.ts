@@ -1,0 +1,1 @@
+export * from './core-programs-grid-item';
