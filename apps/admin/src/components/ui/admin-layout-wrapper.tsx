@@ -84,7 +84,7 @@ export default function AdminLayoutWrapper({
   if (!user) {
     return (
       <div className="container py-5">
-        <Alert variant="primary">
+        <Alert >
           You have been logged out. Please return to&nbsp;
           <a href={`/login`} className="font-medium underline">
             Login
@@ -108,14 +108,14 @@ export default function AdminLayoutWrapper({
   if (!user.emailVerified) {
     return (
       <div className="container py-5">
-        <Alert variant="primary">
-          Your email did not verified. Please return to&nbsp;
+        <Alert>
+          Your email is not verified. Please return to&nbsp;
           <a href={`/verify-email`} className="font-medium underline">
             Verify email
           </a>
           .
         </Alert>
-      </div>
+      </div>   
     );
   }
 

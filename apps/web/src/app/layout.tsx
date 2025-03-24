@@ -19,7 +19,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "Hope E-Learning",
+  title: "Empower E-Learning",
   description: process.env.NEXT_PUBLIC_APP_DESC,
 };
 

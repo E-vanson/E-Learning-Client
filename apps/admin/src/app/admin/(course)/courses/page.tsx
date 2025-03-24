@@ -56,7 +56,7 @@ const getCategories = async () => {
   return (await resp.json()) as Page<Category>;
 };
 
-export default async function Courses(props: Props) {
+export default async function Courses(props: Props) {  
   const coursesPromise = getCourses(props);
   const categoriesPromise = getCategories();
 
@@ -72,7 +72,7 @@ export default async function Courses(props: Props) {
       );
     }
 
-    return <span className="text-primary text-sm font-medium">Published</span>;
+    return <span className="text-teal text-sm font-medium">Published</span>;
   };
 
   return (

@@ -5,7 +5,7 @@ import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 import CourseEditPage from "./course-edit-page";
 
-const getCourse = async (courseId: string) => {
+const getCourse = async (courseId: string) => {  
   const url = `${API_URL_LOCAL}/admin/courses/${courseId}`;
 
   const resp = await fetch(url, {
@@ -14,7 +14,7 @@ const getCourse = async (courseId: string) => {
     },
   });
 
-  await validateResponse(resp);
+  // await validateResponse(resp);
 
   if (resp.status === 204) {
     return undefined;
@@ -32,7 +32,7 @@ export default async function CourseEdit({
   params: { courseId: string };
 }) {
   const course = await getCourse(params.courseId);
-
+  console.log("The course:", course);
   if (!course) {
     notFound();
   }

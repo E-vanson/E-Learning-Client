@@ -74,6 +74,7 @@ const schema = z.object({
 type CourseForm = z.infer<typeof schema>;
 
 export default function CourseEditPage({ course }: CourseEditPageProps) {
+  console.log("Inside updating course", course)
   const user = useAppSelector(selectUser);
   const [isUploading, setUploading] = useState(false);
 
@@ -113,7 +114,8 @@ export default function CourseEditPage({ course }: CourseEditPageProps) {
     auditRef.current = course.audit;
   }, [course]);
 
-  const handleUpdate = async (values: CourseForm) => {
+  const handleUpdate = async (values: CourseForm) => {   
+    
     try {
       const { slug, authors, category, ...body } = values;
       const audit = auditRef.current;
@@ -341,7 +343,7 @@ export default function CourseEditPage({ course }: CourseEditPageProps) {
                           <ReactSelect<User, true>
                             label="Authors"
                             value={field.value}
-                            options={users?.contents}
+                            // options={users?.contents}
                             getOptionLabel={(op) => op.nickname}
                             getOptionValue={(op) => `${op.id}`}
                             onChange={(newValue, action) => {

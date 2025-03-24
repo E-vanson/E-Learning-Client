@@ -67,14 +67,14 @@ export async function generateMetadata(
           url: `${process.env.NEXT_PUBLIC_BASE_URL}/blogs/${post.slug}`,
           title: title,
           description: desc,
-          images: [`${post.cover ?? ""}`, ...previousImages],
+          images: [`${post.cover ?? require("../../../../../packages/assets/images/placeholder.jpg")}`, ...previousImages],
           type: "website",
         },
         twitter: {
           title: title,
           description: desc,
           card: "summary_large_image",
-          images: [`${post.cover ?? ""}`, ...previousImages],
+          images: [`${post.cover ?? require("../../../../../packages/assets/images/placeholder.jpg")}`, ...previousImages],
         },
       };
     }
@@ -156,7 +156,7 @@ export default async function BlogPost({ params }: Props) {
   const content = () => {
     if (post.visibility === "member" && !user) {
       return (
-        <div className="rounded bg-primary dark:bg-muted px-5 py-8 flex flex-col items-center">
+        <div className="rounded bg-teal dark:bg-muted px-5 py-8 flex flex-col items-center">
           <LockKeyhole className="text-primary-foreground dark:text-muted-foreground mb-2 size-7" />
           <p className="mb-4 text-primary-foreground dark:text-muted-foreground">
             You need to sign in to view this content.

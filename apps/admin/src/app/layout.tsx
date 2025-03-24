@@ -15,7 +15,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "Hope E-Learning Dashboard",
+  title: "Empower E-Learning Dashboard",
   description: process.env.NEXT_PUBLIC_APP_DESC,
 };
 
@@ -23,7 +23,7 @@ export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>) {
+}>) {  
   if (headers().get("revalidate") === "true") {
     revalidatePath("/admin", "layout");
   }

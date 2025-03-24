@@ -37,7 +37,7 @@ export default function Header() {
       height="65px"
       className="fixed top-0"
       classNames={{
-        wrapper: "px-4 lg:px-5",
+        wrapper: "px-4 lg:px-5 bg-teal",
       }}
     >
       <NavbarBrand className="flex-grow-0">
@@ -49,7 +49,7 @@ export default function Header() {
         >
           <Menu className="text-muted-foreground" />
         </Button>
-      </NavbarBrand>
+      </NavbarBrand>  
 
       <NavbarContent as="div" justify="end">
         {user && (
@@ -57,7 +57,7 @@ export default function Header() {
             <DropdownMenuTrigger className="outline-none flex-shrink-0">
               <ProfileAvatar
                 src={user.image}
-                prefix={user.nickname.substring(0, 2)}
+                prefix={user.nickname.substring(0, 2)} 
               />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="shadow-xl">

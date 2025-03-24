@@ -68,7 +68,7 @@ function Tabs({ defaultTabKey, className, onTabChange, children }: TabsProps) {
                   }, active)
                 )}
                 {active && (
-                  <div className="position-absolute w-full bg-primary bottom-0 h-[2px]"></div>
+                  <div className="position-absolute w-full bg-teal bottom-0 h-[2px]"></div>
                 )}
               </div>
             </li>

@@ -73,7 +73,7 @@ export default async function Blogs(props: Props) {
             <Link href={`/posts/${b.slug}`}>
               <div className="aspect-w-16 aspect-h-9 w-full lg:w-[200px]">
                 <Image
-                  src={b.cover ?? `/images/placeholder.jpeg`}
+                  src={b.cover ?? require("../../../../../packages/assets/images/placeholder.jpg")}
                   alt="Cover"
                   fill
                   priority
@@ -127,7 +127,7 @@ export default async function Blogs(props: Props) {
 
   return (
     <>
-      <div className="bg-primary dark:bg-muted/70 h-[8rem]">
+      <div className="bg-teal dark:bg-muted/70 h-[8rem]">
         <div className="container h-full flex items-center">
           <h2 className="text-primary-foreground dark:text-foreground">
             Explore blogs

@@ -48,7 +48,7 @@ export default function CoursePage({
 }: CoursePageProps) {
   return (
     <>
-      <div className="bg-primary dark:bg-muted/70 py-6 lg:py-16">
+      <div className="bg-teal dark:bg-muted/70 py-6 lg:py-16">
         <div className="container">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
             <div className="flex flex-col lg:col-span-8 order-2 lg:order-1">
@@ -64,8 +64,8 @@ export default function CoursePage({
               <p className="text-primary-foreground dark:text-foreground font-light mb-5">
                 {course.excerpt}
               </p>
-              <div className="flex flex-wrap gap-4 text-primary-foreground/75 dark:text-foreground/70">
-                <div className="flex items-center">
+              <div className="flex flex-wrap gap-4 text-primary-foreground/85 dark:text-foreground/70">
+                <div className="flex items-center hover:text-teal">
                   <Users className="size-4" />
                   <span className="ms-1 text-sm">
                     {formatNumber(BigInt(course.meta?.enrolledCount ?? 0))}
@@ -73,14 +73,14 @@ export default function CoursePage({
                   </span>
                 </div>
 
-                <div className="flex items-center">
+                <div className="flex items-center hover:text-teal">
                   <BarChart className="size-4" />
                   <span className="ms-1 text-sm">
                     {uppercaseFirstChar(course.level)}
                   </span>
                 </div>
 
-                <div className="flex items-center">
+                <div className="flex items-center hover:text-teal">
                   <Rating rating={Number(course.meta?.rating ?? 0)} size="sm" />
                   <Link
                     href={`/courses/${course.slug}/reviews`}
@@ -94,7 +94,7 @@ export default function CoursePage({
             </div>
             <div className="aspect-w-16 aspect-h-9 bg-gray-100 drop-shadow-xl rounded-md lg:col-span-4 order-1 lg:order-2">
               <Image
-                src={course.cover ?? "/images/placeholder.jpeg"}
+                src={course.cover ?? require("../../../../../../packages/assets/images/placeholder.jpg")}
                 className="object-cover p-1"
                 alt="Cover"
                 fill
@@ -225,31 +225,31 @@ export default function CoursePage({
 
                 <h4 className="fw-bold mb-4">Information</h4>
                 <div className="flex items-center mb-3">
-                  <BookOpen className="size-4 text-primary flex-shrink-0" />
+                  <BookOpen className="size-4 text-teal flex-shrink-0" />
                   <span className="ms-1.5">Chapters</span>
                   <span className="ms-auto text-muted-foreground">
                     {course.chapters?.length ?? 0}
                   </span>
                 </div>
                 <div className="flex items-center mb-3">
-                  <BarChart className="size-4 text-primary flex-shrink-0" />
+                  <BarChart className="size-4 text-teal flex-shrink-0" />
                   <span className="ms-1.5">Level</span>
                   <span className="ms-auto text-muted-foreground">
                     {uppercaseFirstChar(course.level)}
                   </span>
                 </div>
                 <div className="flex items-center mb-3">
-                  <FolderClosed className="size-4 text-primary flex-shrink-0" />
+                  <FolderClosed className="size-4 text-teal flex-shrink-0" />
                   <span className="ms-1.5">Category</span>
                   <Link
                     href={`/categories/${course.category?.slug}`}
-                    className="ms-auto text-primary underline"
+                    className="ms-auto text-teal underline"
                   >
                     {course.category?.name}
                   </Link>
                 </div>
                 <div className="flex items-center">
-                  <DollarSign className="size-4 text-primary flex-shrink-0" />
+                  <DollarSign className="size-4 text-teal flex-shrink-0" />
                   <span className="ms-1.5">Access</span>
                   <span className="ms-auto text-muted-foreground">
                     {uppercaseFirstChar(course.access)}
@@ -266,7 +266,7 @@ export default function CoursePage({
                         <ProfileAvatar
                           src={a?.image}
                           prefix={a?.nickname.substring(0, 2)}
-                          className="size-[54px]"
+                          className="size-[54px] bg-teal"
                         />
                         <h6>{a.nickname}</h6>
                       </div>

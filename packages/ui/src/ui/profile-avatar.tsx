@@ -30,7 +30,7 @@ export function ProfileAvatar({
   return (
     <div
       className={cn(
-        "size-[40px] bg-primary rounded-full uppercase text-primary-foreground place-content-center text-center border border-primary font-medium text-base",
+        "size-[40px] bg-teal rounded-full uppercase text-teal-foreground place-content-center text-center border border-teal font-medium text-base",
         className
       )}
       style={style}

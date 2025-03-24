@@ -6,9 +6,9 @@ import {
 export function VideosGrid() {
   // Array of YouTube video IDs
   const videos = [
-    "8usJTdIRRO4", 
-    "8usJTdIRRO4",
-    "8usJTdIRRO4"
+    "b0XI-cbel1U", 
+    "b0XI-cbel1U",
+    "b0XI-cbel1U"
   ];
 
   return (

@@ -56,10 +56,11 @@ export async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
   const baseUrl = request.url;
 
-  // console.log("path", pathname);
-  // console.log("baseUrl", baseUrl);
+  console.log("path", pathname);
+  console.log("baseUrl", baseUrl);
 
   const accessToken = request.cookies.get("access_token")?.value;
+  console.log("The accesstoken:", accessToken);
   const privatePath = isPrivatePath(pathname);
 
   if (!accessToken && privatePath) {

@@ -119,13 +119,13 @@ export default function Header({ user }: { user?: User | null }) {
           <Link
             href="/login"
             color="foreground"
-            className="font-medium hover:text-primary"
+            className="font-medium hover:text-teal"
           >
             Log In
           </Link>
         </NavbarItem>
         <NavbarItem className="hidden lg:flex">
-          <Button asChild>
+          <Button variant='teal' asChild>
             <Link href="/sign-up">Sign Up</Link>
           </Button>
         </NavbarItem>
@@ -151,7 +151,7 @@ export default function Header({ user }: { user?: User | null }) {
       />
       <NavbarBrand className="flex-grow-0">
         <Link href="/" color="foreground" className="flex items-center">
-          <div className="size-[40px] relative bg-primary rounded">
+          <div className="size-[40px] relative bg-teal rounded">
             {/* <Image
               src="/images/logo.svg"
               alt="Logo"
@@ -170,7 +170,7 @@ export default function Header({ user }: { user?: User | null }) {
           <Link
             href={"/browse"}
             color="foreground"
-            className="text-foreground hover:text-primary"
+            className="text-foreground hover:text-teal"
           >
             Browse
           </Link>
@@ -179,7 +179,7 @@ export default function Header({ user }: { user?: User | null }) {
           <Link
             href={"/categories"}
             color="foreground"
-            className="text-foreground hover:text-primary"
+            className="text-foreground hover:text-teal"
           >
             Categories
           </Link>
@@ -188,7 +188,25 @@ export default function Header({ user }: { user?: User | null }) {
           <Link
             href={"/blogs"}
             color="foreground"
-            className="text-foreground hover:text-primary"
+            className="text-foreground hover:text-teal"
+          >
+            Courses
+          </Link>
+        </NavbarItem>
+        <NavbarItem>
+          <Link
+            href={"/blogs"}
+            color="foreground"
+            className="text-foreground hover:text-teal"
+          >
+            Jobs
+          </Link>
+        </NavbarItem>
+        <NavbarItem>
+          <Link
+            href={"/blogs"}
+            color="foreground"
+            className="text-foreground hover:text-teal"
           >
             Blogs
           </Link>
@@ -197,9 +215,18 @@ export default function Header({ user }: { user?: User | null }) {
           <Link
             href={"/pricing"}
             color="foreground"
-            className="text-foreground hover:text-primary"
+            className="text-foreground hover:text-teal"
           >
-            Pricing
+            Contact Us
+          </Link>
+        </NavbarItem>
+        <NavbarItem>
+          <Link
+            href={"/pricing"}
+            color="foreground"
+            className="text-foreground hover:text-teal"
+          >
+            About Us
           </Link>
         </NavbarItem>
       </NavbarContent>
@@ -220,7 +247,7 @@ export default function Header({ user }: { user?: User | null }) {
           <Link
             href={"/browse"}
             color="foreground"
-            className="text-foreground hover:text-primary"
+            className="text-foreground hover:text-teal"
             onClick={(evt) => setIsMenuOpen(false)}
           >
             Browse
@@ -230,7 +257,7 @@ export default function Header({ user }: { user?: User | null }) {
           <Link
             href={"/categories"}
             color="foreground"
-            className="text-foreground hover:text-primary"
+            className="text-foreground hover:text-teal"
             onClick={(evt) => setIsMenuOpen(false)}
           >
             Categories
@@ -240,7 +267,7 @@ export default function Header({ user }: { user?: User | null }) {
           <Link
             href={"/blogs"}
             color="foreground"
-            className="text-foreground hover:text-primary"
+            className="text-foreground hover:text-teal"
             onClick={(evt) => setIsMenuOpen(false)}
           >
             Blogs
@@ -250,7 +277,7 @@ export default function Header({ user }: { user?: User | null }) {
           <Link
             href={"/pricing"}
             color="foreground"
-            className="text-foreground hover:text-primary"
+            className="text-foreground hover:text-teal"
             onClick={(evt) => setIsMenuOpen(false)}
           >
             Pricing

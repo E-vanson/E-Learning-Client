@@ -28,7 +28,7 @@ type LoginForm = z.infer<typeof schema>;
 
 function LoginPage() {
   const [error, setError] = useState<string>();
-  const [oauthLogin, setOauthLogin] = useState<"facebook" | "google">();
+  const [oauthLogin, setOauthLogin] = useState<"google">();
   const router = useRouter();
 
   const {
@@ -59,6 +59,7 @@ function LoginPage() {
         accessToken: idToken,
         refreshToken: refreshToken,
       });
+      console.log("Inside login function:", emailVerified);
       router.push(emailVerified ? "/" : "/verify-email");
     } catch (error) {
       setError(parseErrorResponse(error));
@@ -104,14 +105,14 @@ function LoginPage() {
               />
               <Link
                 href="/forgot-password"
-                className="mt-1 underline mb-5 text-anchor hover:text-opacity-80"
+                className="mt-1 underline mb-5 text-teal hover:text-opacity-80"
               >
                 Forgot password?
               </Link>
 
               <Button
                 type="submit"
-                color="primary"
+                variant="teal"
                 disabled={isSubmitting || !!oauthLogin}
               >
                 {isSubmitting && (
@@ -189,7 +190,7 @@ function LoginPage() {
             Don&apos;t have an account?
             <Link
               href="/sign-up"
-              className="ms-1 font-medium text-anchor hover:text-opacity-80"
+              className="ms-1 font-medium text-teal hover:text-opacity-80"
             >
               Sign Up
             </Link>

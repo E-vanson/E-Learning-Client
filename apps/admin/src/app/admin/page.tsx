@@ -41,7 +41,7 @@ export default async function Dashboard() {
           </CardContent>
           <Separator />
           <CardFooter className="bg-muted/50 px-4 py-3">
-            <Link href="/admin/courses" className="text-primary">
+            <Link href="/admin/courses" className="text-teal">
               View all
             </Link>
           </CardFooter>
@@ -58,7 +58,7 @@ export default async function Dashboard() {
           </CardContent>
           <Separator />
           <CardFooter className="bg-muted/50 px-4 py-3">
-            <Link href="/admin/posts" className="text-primary">
+            <Link href="/admin/posts" className="text-teal">
               View all
             </Link>
           </CardFooter>
@@ -75,7 +75,7 @@ export default async function Dashboard() {
           </CardContent>
           <Separator />
           <CardFooter className="bg-muted/50 px-4 py-3">
-            <Link href="/admin/subscribers" className="text-primary">
+            <Link href="/admin/subscribers" className="text-teal">
               View all
             </Link>
           </CardFooter>
@@ -92,7 +92,7 @@ export default async function Dashboard() {
           </CardContent>
           <Separator />
           <CardFooter className="bg-muted/50 px-4 py-3">
-            <Link href="/admin/users" className="text-primary">
+            <Link href="/admin/users" className="text-teal">
               View all
             </Link>
           </CardFooter>

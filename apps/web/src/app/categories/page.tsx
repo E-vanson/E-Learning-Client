@@ -2,6 +2,7 @@ import { API_URL_LOCAL } from "@/lib/constants";
 import { Alert, Card, CardContent } from "@elearning/ui";
 import { Category, Page } from "@elearning/lib/models";
 import { buildQueryParams, pluralize } from "@elearning/lib/utils";
+import { CategoryGridItem } from "@/components/category";
 import { Metadata } from "next";
 import Link from "next/link";
 
@@ -26,10 +27,25 @@ const getCategories = async () => {
 
 export default async function Categories() {
   const data = await getCategories();
+  const [categories] = await Promise.all([data]);
+
+  const categoriesUI = (list: Category[]) => {
+    if (list.length === 0) {
+      return <p className="text-muted-foreground mb-5">No content found</p>;
+    }
+
+    return list.map((c) => {
+      return (
+        <Link key={c.id} href={`/categories/${c.slug}`}>          
+          <CategoryGridItem key={c.id} data={c} />          
+        </Link>
+        )
+    })
+  }
 
   return (
     <div className="mb-5">
-      <div className="bg-primary dark:bg-muted/70 mb-4">
+      <div className="bg-teal-50p dark:bg-muted/70 mb-4">
         <div className="container h-[8rem]">
           <div className="flex items-center h-full">
             <h2 className="text-primary-foreground dark:text-foreground">Explore categories</h2>
@@ -38,25 +54,7 @@ export default async function Categories() {
       </div>
       <div className="container py-3">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {!data?.contents.length && (
-            <div className="col-span-4">
-              <Alert>No categories found</Alert>
-            </div>
-          )}
-          {data?.contents.map((c, i) => {
-            return (
-              <Link key={c.id} href={`/categories/${c.slug}`}>
-                <Card className="shadow-none">
-                  <CardContent className="p-4 text-center">
-                    <h4 className="text-primary mb-1">{c.name}</h4>
-                    <div className="text-muted-foreground">
-                      {pluralize(Number(c.courseCount ?? 0), "course")}
-                    </div>
-                  </CardContent>
-                </Card>
-              </Link>
-            );
-          })}
+          {categoriesUI(categories?.contents ?? [])}
         </div>
       </div>
     </div>

@@ -2,11 +2,11 @@
 
 import { enrollCourse } from "@/lib/actions";
 import { parseErrorResponse } from "@/lib/parse-error-response";
-import { Button, useToast } from "@elearning/ui";
+import { Button, ToastAction, useToast } from "@elearning/ui";
 import { useAppSelector } from "@elearning/global-store";
 import { selectUser } from "@elearning/global-store/slices";
 import { Course } from "@elearning/lib/models";
-import { LoaderCircle } from "lucide-react";
+import { Link, LoaderCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { ReactNode, useContext, useState } from "react";
 
@@ -27,6 +27,7 @@ export default function EnrollCourseButton({
   const router = useRouter();
 
   const handleEnrollment = async () => {
+    console.log("The user: ", user)
     if (!user) {
       router.push("/login");
       return;
@@ -48,13 +49,13 @@ export default function EnrollCourseButton({
         description: "Course enrollment success",
         variant: "success",
         // action: (
-        //   <ToastAction altText="Start learning course" asChild>
-        //     <Link
-        //       href={`/learn/${course.slug}/lessons/${enrolledCourse?.resumeLesson?.slug}`}
-        //     >
-        //       Resume
-        //     </Link>
-        //   </ToastAction>
+        //   // <ToastAction altText="Start learning course" asChild>
+        //   //   <Link
+        //   //     href={`/learn/${course.slug}/lessons/${enrolledCourse?.resumeLesson?.slug}`}
+        //   //   >
+        //   //     Resume
+        //   //   </Link>
+        //   // </ToastAction>
         // ),
       });
     } catch (error) {
@@ -73,6 +74,7 @@ export default function EnrollCourseButton({
       onClick={handleEnrollment}
       disabled={isLoading}
       className={className}
+      variant="teal"
     >
       {isLoading && <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />}
       {children}

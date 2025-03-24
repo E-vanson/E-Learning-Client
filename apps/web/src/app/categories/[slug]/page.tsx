@@ -129,7 +129,7 @@ export default async function Topic(props: Props) {
 
   return (
     <>
-      <div className="bg-primary dark:bg-muted/70 h-[5rem]">
+      <div className="bg-teal dark:bg-muted/70 h-[5rem]">
         <div className="container h-full flex items-center">
           <Breadcrumb>
             <BreadcrumbList>

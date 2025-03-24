@@ -139,7 +139,7 @@ function SignUpPage() {
 
               <Button
                 type="submit"
-                color="primary"
+                variant="teal"
                 className="mt-7"
                 disabled={isSubmitting || !!oauthLogin}
               >

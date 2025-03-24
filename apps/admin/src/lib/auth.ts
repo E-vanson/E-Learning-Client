@@ -13,7 +13,7 @@ interface SessionType {
   refreshToken: string | null | undefined;
 }
 
-export async function getSession(): Promise<SessionType> {
+export async function getSession(): Promise<SessionType> {  
   const cookieStore = cookies();
   const accessToken = cookieStore.get("access_token")?.value;
   const refreshToken = cookieStore.get("refresh_token")?.value;

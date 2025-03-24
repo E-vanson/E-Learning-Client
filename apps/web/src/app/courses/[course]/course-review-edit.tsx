@@ -145,6 +145,7 @@ export default function CourseReviewEdit({
               type="submit"
               disabled={isSubmitting}
               className="w-full md:w-auto"
+              variant= "teal"
             >
               {isSubmitting && (
                 <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />

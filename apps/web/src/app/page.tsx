@@ -18,9 +18,6 @@ import { PartnersGrid } from "@/components/partners";
 import { VideosGrid } from "@/components/videos/videos-section";
 
 
-
-
-
 const getTopCourses = async () => {
   const query = buildQueryParams({ limit: 8, orderBy: "enrollment" });
 

@@ -22,7 +22,7 @@ export function CategoryGridItem({ data }: { data: Category }) {
           <div className="aspect-w-16 aspect-h-9">
             <Image
               src={data.cover ?? require("@elearning/assets/images/Screenshot from 2025-03-12 12-32-38.png")}
-              className="bg-primary object-cover"
+              className="bg-teal object-cover"
               alt=""
               priority
               fill
@@ -33,7 +33,7 @@ export function CategoryGridItem({ data }: { data: Category }) {
         {/* <Separator /> */}
         <div className="flex flex-col p-4 grow">
           <Link
-            href={`/posts/${data.slug}`}
+            href={`/categories/${data.slug}`}
             className="text-foreground font-semibold text-lg line-clamp-2"
           >
             {data.name ?? "(Untitled)"}
