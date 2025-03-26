@@ -119,6 +119,7 @@ export default function CourseEditPage({ course }: CourseEditPageProps) {
     try {
       const { slug, authors, category, ...body } = values;
       const audit = auditRef.current;
+      console.log("Updating the course: ", body);
       await updateCourse({
         ...body,
         slug: !slug ? course.slug : slug,
@@ -161,7 +162,7 @@ export default function CourseEditPage({ course }: CourseEditPageProps) {
           await updateCourse({
             id: id,
             title: title,
-            slug: slug,
+            slug: slug, 
             cover: url,
             categoryId: category?.id,
             updatedAt: audit?.updatedAt,
@@ -235,6 +236,7 @@ export default function CourseEditPage({ course }: CourseEditPageProps) {
 
                 <Button
                   className="ms-auto"
+                  variant="teal"
                   disabled={isSubmitting}
                   onClick={() => {
                     handleSubmit(handleUpdate)();

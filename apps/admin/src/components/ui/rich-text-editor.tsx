@@ -93,6 +93,8 @@ function RichTextEditor({
           "media",
           "autolink",
           "help",
+          'searchreplace',
+          "image"
         ],
         menu: {
           file: { title: "File", items: "preview" },

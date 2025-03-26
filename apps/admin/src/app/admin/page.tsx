@@ -68,7 +68,7 @@ export default async function Dashboard() {
             <div className="flex items-center space-x-4">
               <DollarSign className="size-10 text-muted-foreground" />
               <div className="flex flex-col">
-                <div className="text-muted-foreground mb-1">Subscribers</div>
+                <div className="text-muted-foreground mb-1">Applcations</div>
                 <h2 className="">{formatAbbreviate(data.subscriberCount)}</h2>
               </div>
             </div>

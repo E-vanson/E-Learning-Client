@@ -94,7 +94,7 @@ export default function CoursePage({
             </div>
             <div className="aspect-w-16 aspect-h-9 bg-gray-100 drop-shadow-xl rounded-md lg:col-span-4 order-1 lg:order-2">
               <Image
-                src={course.cover ?? require("../../../../../../packages/assets/images/placeholder.jpg")}
+                src={course.cover ?? require("../../../../../../packages/assets/images/course.jpg")}
                 className="object-cover p-1"
                 alt="Cover"
                 fill
@@ -194,7 +194,7 @@ export default function CoursePage({
                   </TooltipProvider> */}
                 </div>
                 {enrolledCourse ? (
-                  <Button asChild>
+                  <Button variant='teal' asChild>
                     {enrolledCourse.resumeLesson?.slug ? (
                       <Link
                         href={`/learn/${course.slug}/lessons/${enrolledCourse.resumeLesson.slug}`}

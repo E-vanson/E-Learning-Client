@@ -37,7 +37,7 @@ export default function Header() {
       height="65px"
       className="fixed top-0"
       classNames={{
-        wrapper: "px-4 lg:px-5 bg-teal",
+        wrapper: "px-4 lg:px-5",
       }}
     >
       <NavbarBrand className="flex-grow-0">

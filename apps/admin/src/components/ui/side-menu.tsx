@@ -42,7 +42,7 @@ export default function SideMenu() {
       } transition-transform ease-out min-w-[200px] max-w-[300px] fixed inset-y-0 w-full border-r z-50 flex flex-col bg-background lg:translate-x-0`}
     >
       <div className="h-[65px] min-h-[65px] px-5 flex items-center gap-3">
-        <div className="size-[40px] relative bg-primary rounded">
+        <div className="size-[40px] relative bg-teal rounded">
           {/* <Image
             src="/images/logo.svg"
             alt="Logo"
@@ -50,7 +50,7 @@ export default function SideMenu() {
             className="rounded object-fill"
           /> */}
         </div>
-        <h3 className="">Brand</h3>
+        <h3 className="">Empower</h3>
         <button className="ms-auto lg:hidden" onClick={toggle}>
           <X className="text-muted-foreground" />
         </button>
@@ -62,7 +62,7 @@ export default function SideMenu() {
           selectedKeys={selectedKeys}
           hideSelectedIcon
           itemClasses={{
-            base: "py-2 mb-1 h-auto rounded-md text-default-600 data-[selected=true]:text-primary data-[selected=true]:bg-primary/20",
+            base: "py-2 mb-1 h-auto rounded-md text-default-600 data-[selected=true]:text-teal data-[selected=true]:bg-teal/20",
             title: "font-medium",
           }}
           classNames={{
@@ -155,6 +155,36 @@ export default function SideMenu() {
               className={cn(!isAdminOrOwner ? "hidden" : undefined)}
             >
               Tags
+            </ListboxItem>
+          </ListboxSection>
+
+          <ListboxSection
+            title="JOBS"
+            className="mt-3"
+            classNames={{
+              heading: "px-[0.65rem]",
+            }}
+          >
+            <ListboxItem
+              key="posts"
+              variant="flat"
+              as={Link}
+              href="/admin/posts"
+              startContent={<Edit size={iconSize} />}
+              color="primary"
+            >
+              Jobs
+            </ListboxItem>
+            <ListboxItem
+              key="tags"
+              variant="flat"
+              as={Link}
+              href="/admin/tags"
+              startContent={<Hash size={iconSize} />}
+              color="primary"
+              className={cn(!isAdminOrOwner ? "hidden" : undefined)}
+            >
+              Applications
             </ListboxItem>
           </ListboxSection>
 

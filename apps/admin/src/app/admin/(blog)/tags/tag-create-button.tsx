@@ -15,7 +15,7 @@ export default function TagCreateButton() {
   return (
     <Dialog open={isOpen} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button color="primary">New tag</Button>
+        <Button color="teal">New tag</Button>
       </DialogTrigger>
 
       <DialogContent

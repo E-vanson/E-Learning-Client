@@ -16,7 +16,7 @@ export default function CategoryCreateButton() {
   return (
     <Dialog open={isOpen} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button color="primary">New category</Button>
+        <Button variant='teal' color="teal">New category</Button>
       </DialogTrigger>
 
       <DialogContent onInteractOutside={(evt) => evt.preventDefault()}>

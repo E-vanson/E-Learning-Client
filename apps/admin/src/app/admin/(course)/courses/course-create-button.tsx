@@ -79,7 +79,7 @@ export default function CourseCreateButton({
       }}
     >
       <DialogTrigger asChild>
-        <Button color="primary">New course</Button>
+        <Button variant= "teal" color="teal">New course</Button>
       </DialogTrigger>
 
       <DialogContent
@@ -196,7 +196,7 @@ export default function CourseCreateButton({
                 Cancel
               </Button>
             </DialogClose>
-            <Button type="submit" className="mt-2" disabled={isSubmitting}>
+            <Button type="submit" variant='teal' className="mt-2" disabled={isSubmitting}>
               {isSubmitting && (
                 <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
               )}

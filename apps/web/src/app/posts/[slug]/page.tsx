@@ -52,36 +52,44 @@ export async function generateMetadata(
   { params }: Props,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
-  try {
-    const post = await getPost(params.slug);
+  const post = await getPost(params.slug).catch((error) => {
+    console.error("Error fetching post in generateMetadata:", error);
+    return null;
+  });
 
-    const previousImages = (await parent).openGraph?.images || [];
+  const previousImages = (await parent).openGraph?.images || [];
 
-    if (post) {
-      const title = post.title ?? "(Untitled)";
-      const desc = post.excerpt ?? title;
-      return {
-        title: title,
-        description: desc,
-        openGraph: {
-          url: `${process.env.NEXT_PUBLIC_BASE_URL}/blogs/${post.slug}`,
-          title: title,
-          description: desc,
-          images: [`${post.cover ?? require("../../../../../packages/assets/images/placeholder.jpg")}`, ...previousImages],
-          type: "website",
-        },
-        twitter: {
-          title: title,
-          description: desc,
-          card: "summary_large_image",
-          images: [`${post.cover ?? require("../../../../../packages/assets/images/placeholder.jpg")}`, ...previousImages],
-        },
-      };
-    }
-  } catch (error) {}
+  if (!post) {
+    return {
+      title: "Post not found",
+    };
+  }
 
+  const title = post.title ?? "(Untitled)";
+  const desc = post.excerpt ?? title;
+  
   return {
-    title: "Post not found",
+    title: title,
+    description: desc,
+    openGraph: {
+      url: `${process.env.NEXT_PUBLIC_BASE_URL}/blogs/${post.slug}`,
+      title: title,
+      description: desc,
+      images: [
+        post.cover ?? require("@/../../../packages/assets/images/placeholder.jpg"), 
+        ...previousImages
+      ],
+      type: "website",
+    },
+    twitter: {
+      title: title,
+      description: desc,
+      card: "summary_large_image",
+      images: [
+        post.cover ?? require("@/../../../packages/assets/images/placeholder.jpg"), 
+        ...previousImages
+      ],
+    },
   };
 }
 
@@ -90,6 +98,7 @@ export default async function BlogPost({ params }: Props) {
   const userPromise = getUser();
 
   const [post, user] = await Promise.all([postPromise, userPromise]);
+  console.log("Finding the post: ", getPost(params.slug))
 
   if (!post) {
     return (
@@ -225,7 +234,7 @@ export default async function BlogPost({ params }: Props) {
 
         <div className="aspect-w-16 aspect-h-9 mb-7">
           <Image
-            src={post.cover ?? "/images/placeholder.jpeg"}
+            src={post.cover ?? require("@/../../../packages/assets/images/placeholder.jpg")}
             className="object-cover rounded-md border"
             alt="Cover"
             fill

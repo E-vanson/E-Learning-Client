@@ -63,7 +63,7 @@ export default function PostCreateButton() {
       }}
     >
       <DialogTrigger asChild>
-        <Button color="primary">New post</Button>
+        <Button variant= "teal" color="teal">New post</Button> 
       </DialogTrigger>
 
       <DialogContent onInteractOutside={(evt) => evt.preventDefault()}>

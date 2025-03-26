@@ -172,7 +172,7 @@ export default function Header({ user }: { user?: User | null }) {
             color="foreground"
             className="text-foreground hover:text-teal"
           >
-            Browse
+            Home
           </Link>
         </NavbarItem>
         <NavbarItem>
@@ -186,7 +186,7 @@ export default function Header({ user }: { user?: User | null }) {
         </NavbarItem>
         <NavbarItem>
           <Link
-            href={"/blogs"}
+            href={"/courses"}
             color="foreground"
             className="text-foreground hover:text-teal"
           >
@@ -222,11 +222,20 @@ export default function Header({ user }: { user?: User | null }) {
         </NavbarItem>
         <NavbarItem>
           <Link
-            href={"/pricing"}
+            href={"/about-us"}
             color="foreground"
             className="text-foreground hover:text-teal"
           >
             About Us
+          </Link>
+        </NavbarItem>
+        <NavbarItem>
+          <Link
+            href={"/about-us"}
+            color="foreground"
+            className="text-foreground hover:text-teal"
+          >
+            Donate
           </Link>
         </NavbarItem>
       </NavbarContent>

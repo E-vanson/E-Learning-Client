@@ -18,6 +18,7 @@ export async function uploadImage(formData: FormData) {
   });
 
   await validateResponse(resp);
+  console.log("Inside Uploading Image: ", resp)
 
   return await resp.text();
 }

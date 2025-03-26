@@ -33,7 +33,9 @@ export default function VerifyEmailPage({ oobCode }: { oobCode: string }) {
         await fetch("/api/auth/refresh", {
           method: "POST",
         });
+        setTimeout(() => {
         router.refresh();
+      }, 500);
       } catch (error) {
         setError(parseErrorResponse(error));
       }

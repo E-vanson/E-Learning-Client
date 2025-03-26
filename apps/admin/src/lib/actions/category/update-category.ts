@@ -6,6 +6,7 @@ import { validateResponse } from "@/lib/validate-response";
 import { revalidatePath } from "next/cache";
 
 export async function updateCategory(body: object) {
+  console.log("Calling the update category api: ", body)
   const session = await getSession();
 
   const url = `${API_URL_LOCAL}/admin/categories`;

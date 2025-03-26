@@ -52,7 +52,7 @@ export default async function Posts(props: Props) {
       );
     }
 
-    return <span className="text-primary font-medium text-sm">Published</span>;
+    return <span className="text-teal font-medium text-sm">Published</span>;
   };
 
   return (

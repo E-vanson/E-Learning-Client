@@ -6,7 +6,8 @@ export default function UserManagement({
   searchParams
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
-}) {
+  }) {
+  console.log("Inside User Mangagement ")
   const mode = searchParams["mode"];
   const oobCode = searchParams["oobCode"];
 

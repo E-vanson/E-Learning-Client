@@ -151,7 +151,7 @@ export default async function LessonDetail({ params }: Props) {
         <h3>{lesson.title}</h3>
 
         {enrolledCourse ? (
-          <Button asChild>
+          <Button variant='teal' asChild>
             {enrolledCourse.resumeLesson?.slug ? (
               <Link
                 href={`/learn/${enrolledCourse.course.slug}/lessons/${enrolledCourse.resumeLesson.slug}`}
