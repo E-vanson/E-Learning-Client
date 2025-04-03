@@ -216,7 +216,7 @@ export default function LessonEditPage({ lesson }: { lesson: Lesson }) {
           <div className="flex-1"></div>
           {saveStateView()}
           {lesson.chapter?.course?.status === "published" && (
-            <Button disabled={isSaving} onClick={handleUpdate}>
+            <Button variant="teal" disabled={isSaving} onClick={handleUpdate}>
               {isSaving && (
                 <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
               )}

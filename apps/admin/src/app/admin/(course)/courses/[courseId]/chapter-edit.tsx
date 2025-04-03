@@ -132,7 +132,7 @@ function ChapterEdit({
             Cancel
           </Button>
         </DialogClose>
-        <Button type="submit" className="mt-2" disabled={isSubmitting}>
+        <Button type="submit" variant="teal" className="mt-2" disabled={isSubmitting}>
           {isSubmitting && (
             <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
           )}

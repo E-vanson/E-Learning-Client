@@ -145,6 +145,7 @@ export default function LessonSettingDialog({
               return (
                 <div className="flex items-center space-x-2 mb-4">
                   <Switch
+                    className="bg-teal"
                     id="trial"
                     checked={field.value ?? false}
                     onCheckedChange={(v) => {
@@ -167,6 +168,7 @@ export default function LessonSettingDialog({
             </Button>
           </DialogClose>
           <Button
+            variant='teal'
             onClick={() => {
               handleSubmit(handleUpdate)();
             }}

@@ -18,6 +18,7 @@ export default function QuizCreateButton({
   return (
     <>
       <Button
+        variant="teal"
         onClick={() => {
           setOpen(true);
         }}
