@@ -5,7 +5,7 @@ import { validateResponse } from "@/lib/validate-response";
 import { DashboardSummary } from "@elearning/lib/models";
 import { formatAbbreviate } from "@elearning/lib/utils";
 import { Card, CardContent, CardFooter, Separator } from "@elearning/ui";
-import { DollarSign, Edit, GraduationCap, UsersIcon } from "lucide-react";
+import { DollarSign, Edit, GraduationCap, UsersIcon, BriefcaseBusiness } from "lucide-react";
 import { cookies } from "next/headers";
 import Link from "next/link";
 
@@ -66,10 +66,10 @@ export default async function Dashboard() {
         <Card className="shadow-none">
           <CardContent className="p-4">
             <div className="flex items-center space-x-4">
-              <DollarSign className="size-10 text-muted-foreground" />
+              <BriefcaseBusiness className="size-10 text-muted-foreground" />
               <div className="flex flex-col">
-                <div className="text-muted-foreground mb-1">Applcations</div>
-                <h2 className="">{formatAbbreviate(data.subscriberCount)}</h2>
+                <div className="text-muted-foreground mb-1">Jobs</div>
+                <h2 className="">{formatAbbreviate(data.jobCount)}</h2>
               </div>
             </div>
           </CardContent>

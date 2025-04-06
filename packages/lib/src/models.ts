@@ -1,11 +1,14 @@
 export type UserRole = "user" | "contributor" | "author" | "admin" | "owner";
 export type PostStatus = "draft" | "published";
+export type JobStatus = "draft" | "closed" | "active";
 export type PostVisibility = "public" | "member" | "paid_member";
 export type CourseStatus = "draft" | "published";
 export type CourseLevel = "beginner" | "intermediate" | "advanced";
 export type CourseAccess = "free" | "premium";
 export type LessonType = "text" | "video" | "quiz";
 export type QuizType = "multiple_choice" | "single_choice" | "short_answer";
+export type BudgetType = "fixed" | "hourly";
+export type ExperienceLevel = "beginner" | "intermediate" | "experienced"
 
 export interface Page<T> {
   contents: T[];
@@ -54,6 +57,11 @@ export interface Category {
   audit?: Audit;
 }
 
+export interface Employer {
+  id: number;
+  companyName?: string;
+}
+
 export interface Post {
   id: number;
   cover?: string;
@@ -70,6 +78,22 @@ export interface Post {
   tags?: Tag[];
   publishedAt?: string;
   meta?: PostMeta;
+  audit?: Audit;
+}
+
+export interface Job {
+  id?: number;
+  title?: string;
+  slug?: string;
+  description?: string;
+  skillsRequired?: string[];
+  budget?: number;
+  budgetType?: BudgetType;
+  deadline?: string;
+  experienceLevel?: ExperienceLevel;
+  employer: Employer;
+  status: JobStatus;
+  publishedAt?: string;
   audit?: Audit;
 }
 
@@ -170,6 +194,7 @@ export interface EnrolledCourse {
 export interface DashboardSummary {
   courseCount: number;
   postCount: number;
+  jobCount: number;
   subscriberCount: number;
   userCount: number;
   enrolledByLevel: { [key: string]: number };

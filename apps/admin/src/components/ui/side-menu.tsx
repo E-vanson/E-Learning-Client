@@ -6,6 +6,7 @@ import { cn } from "@elearning/lib/utils";
 import { DrawerContext } from "@elearning/ui";
 import { Listbox, ListboxItem, ListboxSection } from "@nextui-org/listbox";
 import {
+  BriefcaseBusiness,
   Edit,
   ExternalLink,
   FolderClosed,
@@ -166,11 +167,11 @@ export default function SideMenu() {
             }}
           >
             <ListboxItem
-              key="posts"
+              key="jobs"
               variant="flat"
               as={Link}
-              href="/admin/posts"
-              startContent={<Edit size={iconSize} />}
+              href="/admin/jobs"
+              startContent={<BriefcaseBusiness size={iconSize} />}
               color="primary"
             >
               Jobs
