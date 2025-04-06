@@ -10,7 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from "@elearning/ui";
-import { JobStatus, Page, Post, Job, PostStatus } from "@elearning/lib/models";
+import { JobStatus, Page, Job } from "@elearning/lib/models";
 import {
   buildQueryParams,
   formatAbbreviate,
@@ -18,8 +18,7 @@ import {
 } from "@elearning/lib/utils";
 import { cookies } from "next/headers";
 import Link from "next/link";
-// import PostActionButtons from "./post-action-buttons";
-// import PostCreateButton from "./post-create-button";
+import JobActionButtons from "./job-action-buttons";
 import JobsFilter from "./jobs-filter";
 import JobCreateButton from "./job-create-button";
 
@@ -99,7 +98,7 @@ export default async function Posts(props: Props) {
                   {statusView(p?.status)}
                 </span>
                 <TableCell>
-                  {/* <PostActionButtons post={p} /> */}
+                  <JobActionButtons job={p} />
                 </TableCell>
               </TableRow>
             );

@@ -82,14 +82,14 @@ export interface Post {
 }
 
 export interface Job {
-  id?: number;
+  id: number;
   title?: string;
   slug?: string;
   description?: string;
   skillsRequired?: string[];
   budget?: number;
   budgetType?: BudgetType;
-  deadline?: string;
+  deadline: string;
   experienceLevel?: ExperienceLevel;
   employer: Employer;
   status: JobStatus;
