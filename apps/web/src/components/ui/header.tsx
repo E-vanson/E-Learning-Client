@@ -195,7 +195,7 @@ export default function Header({ user }: { user?: User | null }) {
         </NavbarItem>
         <NavbarItem>
           <Link
-            href={"/blogs"}
+            href={"/jobs"}
             color="foreground"
             className="text-foreground hover:text-teal"
           >

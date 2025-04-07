@@ -61,6 +61,20 @@ export function formatRelativeTimestamp(
   return date.format("MMM DD, YYYY");
 }
 
+export function formatCurrency(
+  amount?: number,
+  currency: string = 'USD'
+): string {
+  if (!amount || isNaN(amount)) return 'Negotiable';
+  
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency,
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0
+  }).format(amount);
+}
+
 export function debounce<I, R>(
   callback: (input: I) => R | Promise<R>,
   timeout = 2000

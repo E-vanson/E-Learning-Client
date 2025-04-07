@@ -81,21 +81,29 @@ export interface Post {
   audit?: Audit;
 }
 
-export interface Job {
+  export interface Job {
+    id: number;
+    title?: string;
+    slug?: string;
+    description?: string;
+    skillsRequired?: string[];
+    budget?: number;
+    budgetType?: BudgetType;
+    deadline: string;
+    experienceLevel?: ExperienceLevel;
+    employer: Employer;
+    status: JobStatus;
+    publishedAt?: string;
+    audit?: Audit;
+  }
+
+export interface EmployerProfile {
   id: number;
-  title?: string;
-  slug?: string;
-  description?: string;
-  skillsRequired?: string[];
-  budget?: number;
-  budgetType?: BudgetType;
-  deadline: string;
-  experienceLevel?: ExperienceLevel;
-  employer: Employer;
-  status: JobStatus;
-  publishedAt?: string;
+  companyName?: string;
+  companyDescription?: string;
+  website?: string;
   audit?: Audit;
-}
+  }
 
 export interface PostMeta {
   viewCount: string;
