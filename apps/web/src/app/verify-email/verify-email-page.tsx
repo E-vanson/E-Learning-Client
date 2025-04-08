@@ -1,5 +1,6 @@
 "use client";
 
+import { firebaseAuth } from "@/lib/firebase.config";
 import { sendVerificationEmail } from "@/lib/actions";
 import { useAppSelector } from "@elearning/global-store";
 import { selectUser } from "@elearning/global-store/slices";
@@ -8,15 +9,22 @@ import { Check } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { inMemoryPersistence } from "firebase/auth";
 
 export default function VerifyEmailPage() {
   const [resend, setResend] = useState(true);
   const [timer, setTimer] = useState(0);
   const { toast } = useToast();
+  const auth = firebaseAuth;
+  auth.setPersistence(inMemoryPersistence)
+
+  auth.currentUser?.getIdToken(true);
+  auth.currentUser?.reload();
+  console.log("User: ", auth.currentUser, auth)   
 
   const user = useAppSelector(selectUser);
 
-  useEffect(() => {
+  useEffect(() => {    
     if (resend) {
       return;
     }
@@ -43,6 +51,10 @@ export default function VerifyEmailPage() {
   if (user === undefined) {
     return null;
   }
+
+  const handleResend = async () => {
+  await sendVerificationEmail();  
+};
 
   if (user?.emailVerified) {
     return (
@@ -106,7 +118,7 @@ export default function VerifyEmailPage() {
                 onClick={async () => {
                   try {
                     setResend(false);
-                    await sendVerificationEmail();
+                    await handleResend();
                   } catch (error: any) {
                     toast({
                       title: "Error",

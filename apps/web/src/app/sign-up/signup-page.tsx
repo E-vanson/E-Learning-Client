@@ -22,8 +22,8 @@ import { useRouter } from "next/navigation";
 
 const schema = z
   .object({
-    nickname: z.string().min(2, {
-      message: "Please your enter nick name",
+    fullName: z.string().min(2, {
+      message: "Please your enter your full name",
     }),
     email: z.string().email({
       message: "Please enter valid email address",
@@ -65,7 +65,7 @@ function SignUpPage() {
       );
       sendEmailVerification(result.user);
       await updateProfile(result.user, {
-        displayName: values.nickname,
+        displayName: values.fullName,
       });
 
       const idToken = await result.user.getIdToken();
@@ -101,13 +101,13 @@ function SignUpPage() {
               }}
             >
               <Input
-                label="Nick Name"
+                label="Full Name"
                 id="nameInput"
                 type="text"
                 wrapperClass="mb-4"
-                placeholder="Enter nick name"
-                {...register("nickname")}
-                error={errors.nickname?.message}
+                placeholder="Enter full name"
+                {...register("fullName")}
+                error={errors.fullName?.message}
               />
               <Input
                 label="Email"

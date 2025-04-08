@@ -36,13 +36,22 @@ export default function ApplyJobButton({
       router.push("/verify-email");
     }
 
+    if (user.jobRole !== "freelancer") {
+      router.push("/freelancer-profile");
+    }
+
     if (job?.status === "closed" && user.expiredAt < new Date().getTime()) {
-      router.push("/pricing");
+     toast({
+        title: "Error",
+        description: "This Job Is Closed.  You can not apply!!",
+        variant: "destructive",
+     });
+      router.push("/jobs");
       return;
     }
     try {
       setLoading(true);
-      await applyJob(job?.id ?? 0, revalidate);
+      // await applyJob(job?.id ?? 0, revalidate);
       toast({
         title: "Success",
         description: "job enrollment success",
@@ -75,6 +84,7 @@ export default function ApplyJobButton({
       className={className}
       variant="teal"
     >
+      Apply Now
       {isLoading && <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />}
       {children}
     </Button>

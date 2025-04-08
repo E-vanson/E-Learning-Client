@@ -6,16 +6,9 @@ import { redirect } from "next/navigation";
 
 export async function sendVerificationEmail() {
   const session = await getSession();
-
+  console.log("Sending the verification email: ")
   const { accessToken } = session;
-
-  // const payload = jose.decodeJwt(accessToken);
-  // const emailVerified = payload["email_verified"];
-
-  // if (emailVerified) {
-  //   redirect("/verify-email");
-  // }
-
+  
   const url = `https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=${process.env.NEXT_PUBLIC_FIREBASE_API_KEY}`;
   const body = {
     requestType: "VERIFY_EMAIL",
@@ -34,6 +27,6 @@ export async function sendVerificationEmail() {
     const json = await resp.json();
     throw new Error(json["error"]["message"]);
   }
-
+  console.log("The response: ", resp);
   return resp.ok;
 }

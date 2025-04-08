@@ -14,15 +14,17 @@ const getUser = async () => {
     next: { revalidate: 10 },
   });
 
+   console.log("The response profile: ", resp.json());
   return resp.ok ? ((await resp.json()) as User) : null;
 };
 
 export default async function SettingPage() {
   const user = await getUser();
+  console.log("The user: ", user);
 
   if (!user) {
     return null;
-  }
+  } 
 
   return (
     <Card className="shadow-none">

@@ -16,9 +16,10 @@ export default function VerifyEmailPage({ oobCode }: { oobCode: string }) {
 
   const initRef = useRef(false);
 
-  const verifyCode = useCallback(
+  const verifyCode = useCallback(    
     async (code: string) => {
       try {
+        console.log("Inside verify email");
         setError(undefined);
         const verifyResponse = await fetch(
           `${API_URL}/auth/verify-email?oobCode=${code}`,

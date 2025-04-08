@@ -1,4 +1,5 @@
 export type UserRole = "user" | "contributor" | "author" | "admin" | "owner";
+export type UserJobRole = "freelancer" | "employer" | "user";
 export type PostStatus = "draft" | "published";
 export type JobStatus = "draft" | "closed" | "active";
 export type PostVisibility = "public" | "member" | "paid_member";
@@ -9,6 +10,8 @@ export type LessonType = "text" | "video" | "quiz";
 export type QuizType = "multiple_choice" | "single_choice" | "short_answer";
 export type BudgetType = "fixed" | "hourly";
 export type ExperienceLevel = "beginner" | "intermediate" | "experienced"
+export type EstimatedTime = "1 Month" | "1 - 2 Months" | "3 Months" | "More Than 3 Months";
+export type ProposalStatus = "submitted" | "reviewed" | "accepted" | "rejected" | "shortlisted";
 
 export interface Page<T> {
   contents: T[];
@@ -28,6 +31,7 @@ export interface User {
   nickname: string;
   username: string;
   role: UserRole;
+  jobRole: UserJobRole;
   email?: string;
   emailVerified: boolean;
   image?: string;
@@ -97,8 +101,38 @@ export interface Post {
     audit?: Audit;
   }
 
-export interface EmployerProfile {
+  export interface PortfolioLinks {
+    platform: string;   
+    url: string;   
+  }  
+
+  export interface Freelancer {
+    id: string;
+    userId: string;
+    headline?: string;
+    overview?: string;
+    hourlyRate?: number;
+    skills?: string[];
+    portfolioLinks?: PortfolioLinks[];      
+    audit?: Audit; 
+  }
+
+export interface Proposal {
   id: number;
+  job: Job;
+  freelancer: Freelancer;
+  coverLetter: string;
+  bidAmount: number;
+  estimatedTime: EstimatedTime;
+  status: ProposalStatus;
+  audit?: Audit;
+  }
+
+
+
+export interface EmployerProfile {
+  id: string;
+  userId: string;
   companyName?: string;
   companyDescription?: string;
   website?: string;

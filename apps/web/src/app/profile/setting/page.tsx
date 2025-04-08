@@ -5,6 +5,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import ChangePassword from "./change-password";
 import ProfileUpdate from "./profile-update";
+import JobProfile from "./job-profile";
 
 const getUser = async () => {
   const url = `${API_URL_LOCAL}/profile`;
@@ -30,6 +31,8 @@ export default async function Setting() {
         <ProfileUpdate user={user} />
         <Separator />
         <ChangePassword />
+        <Separator />
+        <JobProfile user={user}/>
       </CardContent>
     </Card>
   );

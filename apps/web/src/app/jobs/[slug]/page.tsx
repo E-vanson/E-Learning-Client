@@ -24,6 +24,8 @@ import { getJobData } from "@/lib/actions/job-application/get-job";
 import { API_URL_LOCAL } from "@/lib/constants";
 import { notFound } from "next/navigation";
 import { getSession } from "@/lib/auth";
+import { getEmployerData } from "@/lib/actions/job-application/get-employer";
+import ApplyJobButton from "./apply-job-button";
 
 interface PageProps {
   params: { slug: string };
@@ -39,11 +41,12 @@ export default async function JobPage({ params }: PageProps) {
   if (!job) notFound();
 
   // Fetch employer data (you'll need to implement this)
-  // const employer = await getEmployerData(job.employerId); 
+  const employer = await getEmployerData(job.employerId); 
+  console.log("The employer: ", employer);
 
   return (
     <>
-      <div className="bg-teal dark:bg-muted/70 py-6 lg:py-16">
+      <div className="bg-teal-50p dark:bg-muted/70 py-6 lg:py-16">
         <div className="container">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
             <div className="flex flex-col lg:col-span-8 order-2 lg:order-1">
@@ -151,9 +154,11 @@ export default async function JobPage({ params }: PageProps) {
                   </h3>
                 </div>
 
-                <Button variant="teal" className="w-full">
+                {/* <Button variant="teal" className="w-full">
                   Apply Now
-                </Button>
+                </Button> */}
+
+                <ApplyJobButton/>
 
                 <Separator className="my-5" />
 
@@ -184,7 +189,7 @@ export default async function JobPage({ params }: PageProps) {
                   </div>
                 </div>
 
-                {/* {employer && (
+                {employer && (
                   <>
                     <Separator className="my-5" />
                     <h4 className="font-semibold mb-4">Employer Information</h4>
@@ -197,7 +202,7 @@ export default async function JobPage({ params }: PageProps) {
                         </span>
                       </div>
 
-                      {employer.location && (
+                      {/* {employer.location && (
                         <div className="flex items-center">
                           <MapPin className="size-4 text-teal mr-2" />
                           <span>Location:</span>
@@ -205,7 +210,7 @@ export default async function JobPage({ params }: PageProps) {
                             {employer.location}
                           </span>
                         </div>
-                      )}
+                      )} */}
 
                       {employer.website && (
                         <div className="flex items-center">
@@ -220,7 +225,7 @@ export default async function JobPage({ params }: PageProps) {
                       )}
                     </div>
                   </>
-                )} */}
+                )}
               </CardContent>
             </Card>
           </div>
@@ -230,23 +235,3 @@ export default async function JobPage({ params }: PageProps) {
   );
 }
 
-// Add this function to fetch employer data
-// async function getEmployerData(employerId: string) {
-//   const session = await getSession();
-//   const url = `${API_URL_LOCAL}/employers/${employerId}`;
-
-//   try {
-//     const response = await fetch(url, {
-//       headers: {
-//         Cookie: session.cookie,
-//       },
-//       cache: "no-store",
-//     });
-    
-//     if (!response.ok) return null;
-//     return await response.json();
-//   } catch (error) {
-//     console.error("Error fetching employer data:", error);
-//     return null;
-//   }
-// }

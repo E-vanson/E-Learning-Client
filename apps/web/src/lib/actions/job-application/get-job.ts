@@ -1,6 +1,6 @@
 "use server";
 
-import { getSession } from "@/lib/auth";
+
 import { API_URL_LOCAL } from "@/lib/constants";
 import { validateResponse } from "@/lib/validate-response";
 

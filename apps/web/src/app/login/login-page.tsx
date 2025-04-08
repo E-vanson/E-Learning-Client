@@ -10,10 +10,12 @@ import { inMemoryPersistence, signInWithEmailAndPassword } from "firebase/auth";
 import { LoaderCircle } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
+import { browserLocalPersistence, setPersistence } from "firebase/auth";
+
 
 const schema = z.object({
   username: z.string().email({
@@ -44,17 +46,19 @@ function LoginPage() {
       setError(undefined);
       const auth = firebaseAuth;
       auth.setPersistence(inMemoryPersistence);
+      console.log("Authh...:", auth)
       const result = await signInWithEmailAndPassword(
         auth,
         values.username,
         values.password
       );
 
+      console.log("The result: ", result);
       const idToken = await result.user.getIdToken();
       const refreshToken = result.user.refreshToken;
       const emailVerified = result.user.emailVerified;
 
-      await auth.signOut();
+      // await auth.signOut();
       await applyAuthCookies({
         accessToken: idToken,
         refreshToken: refreshToken,
@@ -65,6 +69,14 @@ function LoginPage() {
       setError(parseErrorResponse(error));
     }
   };
+
+  setPersistence(firebaseAuth, browserLocalPersistence)
+  .then(() => {
+    console.log("Persistence set to local");
+  })
+  .catch((error) => {
+    console.error("Failed to set persistence:", error);
+  })
 
   return (
     <div className="container py-3">
