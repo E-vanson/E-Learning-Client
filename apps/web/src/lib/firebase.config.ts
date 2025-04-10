@@ -1,6 +1,10 @@
-// lib/firebase.ts
 import { initializeApp, getApps, getApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
+import { 
+  getAuth, 
+  setPersistence, 
+  browserLocalPersistence,
+  inMemoryPersistence 
+} from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -9,8 +13,15 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-const firebaseApp = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
+// Initialize with proper singleton pattern
+const firebaseApp = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 const firebaseAuth = getAuth(firebaseApp);
-firebaseAuth.languageCode = 'en'; // optional but nice
+
+// Set default persistence
+if (typeof window !== 'undefined') { // Ensure client-side only
+  setPersistence(firebaseAuth, browserLocalPersistence)
+    .then(() => console.debug("Auth persistence initialized"))
+    .catch((error) => console.error("Persistence error:", error));
+}
 
 export { firebaseApp, firebaseAuth };

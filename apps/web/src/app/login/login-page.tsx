@@ -6,7 +6,7 @@ import { parseErrorResponse } from "@/lib/parse-error-response";
 import { Input, PasswordInput } from "@elearning/ui/forms";
 import { Alert, Button, Card, CardContent, CardFooter, Separator } from "@elearning/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { inMemoryPersistence, signInWithEmailAndPassword } from "firebase/auth";
+import { inMemoryPersistence, signInWithEmailAndPassword, browserLocalPersistence, setPersistence, onAuthStateChanged, User } from "firebase/auth";
 import { LoaderCircle } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -14,7 +14,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
-import { browserLocalPersistence, setPersistence } from "firebase/auth";
+import { VerifyEmail } from "@/lib/actions/auth/verify-email";
 
 
 const schema = z.object({
@@ -32,6 +32,7 @@ function LoginPage() {
   const [error, setError] = useState<string>();
   const [oauthLogin, setOauthLogin] = useState<"google">();
   const router = useRouter();
+  const auth = firebaseAuth;
 
   const {
     register,
@@ -43,9 +44,11 @@ function LoginPage() {
 
   const handleLogin = async (values: LoginForm) => {
     try {
-      setError(undefined);
+      setError(undefined);     
       const auth = firebaseAuth;
-      auth.setPersistence(inMemoryPersistence);
+    
+    // Explicitly set persistence before signing in
+      await setPersistence(auth, browserLocalPersistence);
       console.log("Authh...:", auth)
       const result = await signInWithEmailAndPassword(
         auth,
@@ -53,10 +56,12 @@ function LoginPage() {
         values.password
       );
 
+      
       console.log("The result: ", result);
       const idToken = await result.user.getIdToken();
       const refreshToken = result.user.refreshToken;
       const emailVerified = result.user.emailVerified;
+      const userId = result.user.uid;
 
       // await auth.signOut();
       await applyAuthCookies({
@@ -64,19 +69,27 @@ function LoginPage() {
         refreshToken: refreshToken,
       });
       console.log("Inside login function:", emailVerified);
+      const currentUser = await new Promise<User | null>((resolve) => {
+      const unsubscribe = onAuthStateChanged(auth, (user) => {
+        unsubscribe();
+        resolve(user);
+        });
+      });
+
+      console.log("before verify function:", emailVerified, userId);
+      try {
+      await VerifyEmail(userId, emailVerified);
+    } catch (error) {
+      console.error("Email verification update failed:", error);
+      // Handle error but don't block navigation
+    }
+
+      console.log("Persisted auth state:", currentUser);
       router.push(emailVerified ? "/" : "/verify-email");
     } catch (error) {
       setError(parseErrorResponse(error));
     }
   };
-
-  setPersistence(firebaseAuth, browserLocalPersistence)
-  .then(() => {
-    console.log("Persistence set to local");
-  })
-  .catch((error) => {
-    console.error("Failed to set persistence:", error);
-  })
 
   return (
     <div className="container py-3">

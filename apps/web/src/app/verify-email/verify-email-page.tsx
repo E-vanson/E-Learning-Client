@@ -9,13 +9,15 @@ import { Check } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { VerifyEmail } from "@/lib/actions/auth/verify-email";
+import router from "next/router";
 import { inMemoryPersistence } from "firebase/auth";
 
 export default function VerifyEmailPage() {
   const [resend, setResend] = useState(true);
   const [timer, setTimer] = useState(0);
   const { toast } = useToast();
-  const auth = firebaseAuth;
+  const auth = firebaseAuth;  
   auth.setPersistence(inMemoryPersistence)
 
   auth.currentUser?.getIdToken(true);
@@ -23,6 +25,39 @@ export default function VerifyEmailPage() {
   console.log("User: ", auth.currentUser, auth)   
 
   const user = useAppSelector(selectUser);
+
+  useEffect(() => {
+    const checkVerificationStatus = async () => {
+      try {
+        // Refresh user data
+        await auth.currentUser?.reload();
+        const currentUser = auth.currentUser;
+        
+        if (currentUser) {
+          const isVerified = currentUser.emailVerified;
+          const userId = currentUser.uid;
+
+          // Call backend API
+          VerifyEmail(userId,isVerified)
+
+          // Redirect if verified
+          if (isVerified) {
+            router.push('/');
+          }
+        }
+      } catch (error) {        
+        toast({
+          title: "Error",
+          description: "Failed to check verification status",
+          variant: "destructive",
+        });
+      }
+    };
+
+    if (timer === 0 && !resend) {
+      checkVerificationStatus();
+    }
+  }, [timer, resend, auth, router, toast]);
 
   useEffect(() => {    
     if (resend) {
@@ -53,7 +88,8 @@ export default function VerifyEmailPage() {
   }
 
   const handleResend = async () => {
-  await sendVerificationEmail();  
+  await sendVerificationEmail();
+  router.push('/login');   
 };
 
   if (user?.emailVerified) {
@@ -119,7 +155,7 @@ export default function VerifyEmailPage() {
                   try {
                     setResend(false);
                     await handleResend();
-                  } catch (error: any) {
+                  } catch (error: any)   {
                     toast({
                       title: "Error",
                       description: error.message,
