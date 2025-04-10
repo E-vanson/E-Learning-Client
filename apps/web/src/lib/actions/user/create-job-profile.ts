@@ -7,6 +7,7 @@ import { UserJobRole } from "@elearning/lib/models";
 import { revalidatePath } from "next/cache";
 
 export async function createUserJobProfile(role: UserJobRole, body: object) {
+    console.log("At the beginning of teh request");
     const session = await getSession();
     let path = '';
 
@@ -22,9 +23,11 @@ export async function createUserJobProfile(role: UserJobRole, body: object) {
         "Content-Type": "application/json",
     },
     });
-
+    
     await validateResponse(resp);
-
+    const data = await resp.json();
+    console.log("The data: ", data);
     revalidatePath("/profile");
+    return data;
 
 }

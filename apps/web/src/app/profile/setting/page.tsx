@@ -20,6 +20,7 @@ const getUser = async () => {
 
 export default async function Setting() {
   const user = await getUser();
+  console.log("The user from the be", user);
 
   if (!user) {
     redirect("/");

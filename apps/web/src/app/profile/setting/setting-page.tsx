@@ -4,6 +4,7 @@ import { User } from "@elearning/lib/models";
 import { cookies } from "next/headers";
 import ChangePassword from "./change-password";
 import ProfileUpdate from "./profile-update";
+import JobProfile from "./job-profile";
 
 const getUser = async () => {
   const url = `${API_URL_LOCAL}/profile`;
@@ -32,6 +33,7 @@ export default async function SettingPage() {
         <ProfileUpdate user={user} />
         <Separator />
         <ChangePassword />
+        <JobProfile user={user}/>
       </CardContent>
     </Card>
   );

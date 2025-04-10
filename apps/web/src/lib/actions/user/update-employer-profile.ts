@@ -22,5 +22,7 @@ export async function updateUserEmployerProfile(body: object) {
 
     await validateResponse(resp);
 
+    const data = await resp.json();
     revalidatePath("/profile");
+    return data;
 }
