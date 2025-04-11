@@ -18,33 +18,52 @@ import { getFreelancerProfile } from "@/lib/actions/job-application/get-freelanc
 import { getEmployerData } from "@/lib/actions/job-application/get-employer";
 
 const baseSchema = z.object({
-  profileType: z.enum(["employer", "freelancer"])
+  profileType: z.enum(["employer", "freelancer", "user"])
 });
 
 const employerSchema = baseSchema.extend({
   profileType: z.literal("employer"),
-  companyName: z.string().min(1, "Company name is required"),
-  companyDescription: z.string().optional(),
-  website: z.string().url("Invalid website URL").optional()
+  companyName: z.string().min(1, {
+    message: "Please enter companyname",
+  }),
+  companyDescription: z.string({
+    message: "Please enter company description",
+  }).optional(),
+  website: z.string().url({
+    message: "Please enter valid website url",
+  }).optional()
 });
 
 const freelancerSchema = baseSchema.extend({
   profileType: z.literal("freelancer"),
-  headline: z.string().optional(),
+  headline: z.string({
+    message: "Please enter a headline",
+  }).optional(),
   overview: z.string()
-    .min(50, "Overview should be at least 50 characters")
+    .min(50,{
+    message: "Please enter an overview",
+   })
     .max(2000, "Overview should be less than 2000 characters"),
   hourlyRate: z.number()
-    .min(10, "Minimum hourly rate is $10")
+    .min(10, {
+    message: "Please enter an hourly rate",
+  })
     .max(500, "Maximum hourly rate is $500"),
-  skills: z.array(z.string().min(1, "Skill cannot be empty"))
+  skills: z.array(z.string().min(1,{
+    message: "Please enter atleast one skill",
+   }))
     .max(10, "Maximum 10 skills allowed")
+    .transform(values => values.filter(Boolean))
     .optional()
     .default([]), // Add default empty array
   portfolioLinks: z.array(
     z.object({
-      platform: z.string().min(1, "Platform is required"),
-      url: z.string().url("Invalid URL")
+      platform: z.string().min(1,{
+    message: "Platform is required",
+  } ),
+      url: z.string().url({
+    message: "Please enter a valid url",
+  })
     })
   ).optional()
 });
@@ -53,17 +72,15 @@ type FormData = z.infer<typeof employerSchema | typeof freelancerSchema>;
 
 type ProfileType = "employer" | "freelancer" | "user";
 
-type PortfolioLinkField = PortfolioLinks & { id: string };
-
 type EmployerFormType = {
-  profileType: "employer";
+  profileType: ProfileType;
   companyName: string;
   companyDescription?: string;
   website?: string;
 };
 
 type FreelancerFormType = {
-  profileType: "freelancer";
+  profileType: ProfileType;
   overview: string;
   hourlyRate: number;
   skills: string[];
@@ -73,7 +90,7 @@ type FreelancerFormType = {
 
 export default function JobProfile({ user }: { user: User }) {
   const { toast } = useToast();
-  const [profileType, setProfileType] = useState<ProfileType>('user');
+  const [profileType, setProfileType] = useState<ProfileType>("user");
   const [profile, setProfile] = useState<EmployerProfile | Freelancer | null>(null);
   const [existingProfile, setExistingProfile] = useState<EmployerProfile | Freelancer | null>(null);
   const [freelancerProfile, setFreelancerProfile] = useState<Freelancer | null>(null);
@@ -109,16 +126,15 @@ export default function JobProfile({ user }: { user: User }) {
     mode: "onBlur",
     defaultValues: {
       profileType: user.jobRole === "employer" ? "employer" : user.jobRole === "freelancer" ? "freelancer" : undefined,
-      skills: []      
+      skills: freelancerProfile?.skills || [],
+      portfolioLinks: freelancerProfile?.portfolioLinks || []      
     },
     shouldUnregister: true
   });
-  
-  const profileTypee = watch("profileType");
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "portfolioLinks"
+    name: "portfolioLinks"        
   });  
 
   const isFreelancer = watch('profileType') === 'freelancer';
@@ -161,43 +177,34 @@ export default function JobProfile({ user }: { user: User }) {
 
   useEffect(() => {
   if (profileType) {
-    trigger(); // Trigger validation when profileType changes
+    trigger();
   }
 }, [profileType, trigger]);
+ 
+  //   if (freelancerProfile?.portfolioLinks) {
+  //     freelancerProfile.portfolioLinks.forEach(link => {
+  //       append(link);
+  //     });
+  //   }
+  // }, [freelancerProfile, append]);
 
   useEffect(() => {
-    if (freelancerProfile?.portfolioLinks) {
-      freelancerProfile.portfolioLinks.forEach(link => {
-        append(link);
-      });
-    }
-  }, [freelancerProfile, append]);
+  const subscription = watch((value, { name, type }) => {        
+  });
+  return () => subscription.unsubscribe();
+}, [watch]);
 
-  // const populateForm = (profile: EmployerProfile | Freelancer) => {
-  //   if (isEmployer(profile)) {
-  //     setValue('companyName', profile.companyName || '');
-  //     setValue('companyDescription', profile.companyDescription || '');
-  //     setValue('website', profile.website || '');
-  //   } else {
-  //     setValue('headline', profile.headline || '');
-  //     setValue('overview', profile.overview || '');
-  //     setValue('hourlyRate', profile.hourlyRate || 0);
-  //     setValue('skills', (profile.skills || []).join(', '));
-  //   }
-  // };
-
-  // const createUserRole = (role: UserJobRole) => {
-  //   if (role === 'freelancer') {
-  //     setProfile(freelancer);
-  //   }else{
-  //     setProfile(employer);
-  //   }
-
-  // }
+  
+useEffect(() => {
+  if (freelancerProfile?.skills) {
+    setValue("skills", freelancerProfile.skills);
+    setValue("profileType", "freelancer")
+    setValue("portfolioLinks", freelancerProfile?.portfolioLinks)
+  }
+}, [freelancerProfile, setValue]);  
 
   const handleRoleSelection = async (selectedType: "employer" | "freelancer") => {
-    try {
-      //  createUserRole(selectedType);
+    try {     
       setProfileType(selectedType);
       if (selectedType === "freelancer") {
         setFreelancerProfile({ ...freelancer, userId: user.id });
@@ -209,8 +216,7 @@ export default function JobProfile({ user }: { user: User }) {
       toast({ variant: "destructive", title: parseErrorResponse(error) });
     }
   };
-
-  // const handleProfileUpdate = async (data: any) => {
+ 
   //   try {
   //     if (profileType === "employer") {
   //       await updateUserEmployerProfile({
@@ -231,36 +237,30 @@ export default function JobProfile({ user }: { user: User }) {
   //   }
   // };
 
-  const handleProfileUpdate = async (data: FormData) => {
-    console.log("Inside profile upate: ..")
-    try {
-      console.log("Inside profile upate: ..")
+  const handleProfileUpdate = async (data: FormData) => {    
+    try {      
       if (profileType === "employer")  {
-        if (employerProfile?.id) {
-          // Update existing profile
+        if (employerProfile?.id) {          
           const updated = await updateUserEmployerProfile({
             id: employerProfile.id,
             ...data
           });
           setEmployerProfile(updated);
         }
-        else {
-          // Create new profile
+        else {          
           const result = await createUserJobProfile("employer", data);
           setEmployerProfile(result);
         }
       } else if (profileType === "freelancer") {
-        if (freelancerProfile?.id) {
-          // Update existing profile
+        if (freelancerProfile?.id) {          
           const updated = await updateUserFreelancerProfile({
             id: freelancerProfile.id,
+            userId: user.id,
             ...data
           });
           setFreelancerProfile(updated);
-
         }
-        else {
-          // Create new profile
+        else {          
           const result = await createUserJobProfile("freelancer", data);
           setFreelancerProfile(result);
         }
@@ -275,15 +275,13 @@ export default function JobProfile({ user }: { user: User }) {
   function isEmployer(profile: EmployerProfile | Freelancer): profile is EmployerProfile {
     return 'companyName' in profile;    
   }  
-
-  console.log("Current user job role: ", user.jobRole, profileType);
+    
 
 
   if (loading) return <LoaderCircle className="animate-spin" />;
 
   return (
-    <form onSubmit={handleSubmit(handleProfileUpdate, (errors) => {
-      console.log("Form errors:", errors);
+    <form onSubmit={handleSubmit(handleProfileUpdate, (errors) => {      
       toast({
         variant: "destructive",
         title: "Validation errors",
@@ -357,21 +355,15 @@ export default function JobProfile({ user }: { user: User }) {
 
           <div className="space-y-2">
           <Input
-          type="text" // Fix typo ("tet" -> "text")
+          type="text"
           label="Skills"
           {...register("skills", {
-            setValueAs: (value: unknown) => {
-              if (typeof value !== "string") {
-                if (Array.isArray(value)) return value;
-                return [];
-              }
-              return value
-                .split(",")
-                .map(skill => skill.trim())
-                .filter(Boolean);
-            }
+          setValueAs: (value) => 
+            typeof value === 'string' 
+              ? value.split(',').map(s => s.trim()).filter(Boolean) 
+              : value
           })}
-            defaultValue={freelancerProfile?.skills?.join(", ")} // Convert array to string
+            defaultValue={freelancerProfile?.skills?.join(", ")} 
             error={freelancerErrors?.skills?.message}
         />
           <p className="text-muted-foreground text-sm">
@@ -386,17 +378,13 @@ export default function JobProfile({ user }: { user: User }) {
                 <div className="grid grid-cols-2 gap-2 flex-1">
                   <Input
                     defaultValue={field.platform}
-                    placeholder="Platform (e.g. GitHub)"
-                    // error={errors.profileType..[index]?.platform?.message}
-                    {...register(`portfolioLinks.${index}.platform`)}
-                    // error={errors.portfolioLinks?.[index]?.platform?.message}
+                    placeholder="Platform (e.g. GitHub)"                    
+                    {...register(`portfolioLinks.${index}.platform`)}                    
                   />
                   <Input
                   defaultValue={field.url}
-                  placeholder="https://github.com/johndoe"
-                  // error={errors.portfolioLinks?.[index]?.url?.message}
-                    {...register(`portfolioLinks.${index}.url`)}
-                    // error={errors.portfolioLinks?.[index]?.url?.message}
+                  placeholder="https://github.com/johndoe"                  
+                    {...register(`portfolioLinks.${index}.url`)}                    
                   />
                 </div>
                 <Button
