@@ -10,7 +10,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { VerifyEmail } from "@/lib/actions/auth/verify-email";
-import router from "next/router";
 import { inMemoryPersistence } from "firebase/auth";
 
 export default function VerifyEmailPage() {
@@ -39,11 +38,7 @@ export default function VerifyEmailPage() {
 
           // Call backend API
           VerifyEmail(userId,isVerified)
-
-          // Redirect if verified
-          if (isVerified) {
-            router.push('/');
-          }
+                    
         }
       } catch (error) {        
         toast({
@@ -57,7 +52,7 @@ export default function VerifyEmailPage() {
     if (timer === 0 && !resend) {
       checkVerificationStatus();
     }
-  }, [timer, resend, auth, router, toast]);
+  }, [timer, resend, auth, toast]);
 
   useEffect(() => {    
     if (resend) {
@@ -88,8 +83,7 @@ export default function VerifyEmailPage() {
   }
 
   const handleResend = async () => {
-  await sendVerificationEmail();
-  router.push('/login');   
+  await sendVerificationEmail();     
 };
 
   if (user?.emailVerified) {

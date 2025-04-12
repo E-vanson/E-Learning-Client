@@ -44,11 +44,9 @@ const freelancerSchema = baseSchema.extend({
     message: "Please enter an overview",
    })
     .max(2000, "Overview should be less than 2000 characters"),
-  hourlyRate: z.number()
-    .min(10, {
+  hourlyRate: z.number( {
     message: "Please enter an hourly rate",
-  })
-    .max(500, "Maximum hourly rate is $500"),
+  }),
   skills: z.array(z.string().min(1,{
     message: "Please enter atleast one skill",
    }))
@@ -113,6 +111,9 @@ export default function JobProfile({ user }: { user: User }) {
     website: ''
   }
 
+  const profileSchema = z.discriminatedUnion("profileType", [employerSchema, freelancerSchema]);
+
+
   const {
     control,
     register,
@@ -122,12 +123,18 @@ export default function JobProfile({ user }: { user: User }) {
     watch,
     trigger
   } = useForm<FormData>({
-    resolver: zodResolver(user.jobRole === "employer" ? employerSchema : freelancerSchema),
+    resolver: zodResolver(profileSchema),
     mode: "onBlur",
     defaultValues: {
       profileType: user.jobRole === "employer" ? "employer" : user.jobRole === "freelancer" ? "freelancer" : undefined,
       skills: freelancerProfile?.skills || [],
-      portfolioLinks: freelancerProfile?.portfolioLinks || []      
+      portfolioLinks: freelancerProfile?.portfolioLinks || [] ,
+      overview: freelancerProfile?.overview,
+      hourlyRate: freelancerProfile?.hourlyRate,
+      companyName: employerProfile?.companyName,
+      companyDescription: employerProfile?.companyDescription,
+      website: employerProfile?.website
+      
     },
     shouldUnregister: true
   });
@@ -160,6 +167,7 @@ export default function JobProfile({ user }: { user: User }) {
           setProfileType("employer");
         } else {
           setExistingProfile(profile)
+          setProfileType("user")
         }
       } catch (error) {
         toast({ variant: "destructive", title: "Error loading profile" });
@@ -180,14 +188,7 @@ export default function JobProfile({ user }: { user: User }) {
     trigger();
   }
 }, [profileType, trigger]);
- 
-  //   if (freelancerProfile?.portfolioLinks) {
-  //     freelancerProfile.portfolioLinks.forEach(link => {
-  //       append(link);
-  //     });
-  //   }
-  // }, [freelancerProfile, append]);
-
+   
   useEffect(() => {
   const subscription = watch((value, { name, type }) => {        
   });
@@ -200,8 +201,10 @@ useEffect(() => {
     setValue("skills", freelancerProfile.skills);
     setValue("profileType", "freelancer")
     setValue("portfolioLinks", freelancerProfile?.portfolioLinks)
+  } else if (employerProfile?.companyDescription) {
+    setValue("profileType", "employer")
   }
-}, [freelancerProfile, setValue]);  
+}, [freelancerProfile,employerProfile, setValue]);  
 
   const handleRoleSelection = async (selectedType: "employer" | "freelancer") => {
     try {     
@@ -243,13 +246,17 @@ useEffect(() => {
         if (employerProfile?.id) {          
           const updated = await updateUserEmployerProfile({
             id: employerProfile.id,
+            userId: user.id,
             ...data
           });
-          setEmployerProfile(updated);
+          if(updated) setEmployerProfile(updated);
+          toast({ variant: "destructive", title: "Error Updating Profile" });
         }
         else {          
           const result = await createUserJobProfile("employer", data);
-          setEmployerProfile(result);
+          if (result) setEmployerProfile(result);
+          toast({ variant: "destructive", title: "Error Creating Profile" });
+          
         }
       } else if (profileType === "freelancer") {
         if (freelancerProfile?.id) {          
@@ -258,14 +265,15 @@ useEffect(() => {
             userId: user.id,
             ...data
           });
-          setFreelancerProfile(updated);
+          if(updated) setFreelancerProfile(updated);
+          toast({ variant: "destructive", title: "Error Updating Profile" });
         }
         else {          
           const result = await createUserJobProfile("freelancer", data);
-          setFreelancerProfile(result);
+          if (result) setFreelancerProfile(result);
+          toast({ variant: "destructive", title: "Error Creating Profile" });
         }
-      }
-      
+      }      
       toast({ variant: "success", title: "Profile updated successfully!" });
     } catch (error) {
       toast({ variant: "destructive", title: parseErrorResponse(error) });
@@ -279,9 +287,10 @@ useEffect(() => {
 
 
   if (loading) return <LoaderCircle className="animate-spin" />;
-
+console.log("The current profile type: ", profileType)
   return (
-    <form onSubmit={handleSubmit(handleProfileUpdate, (errors) => {      
+    <form onSubmit={handleSubmit(handleProfileUpdate, (errors) => {  
+      console.log("The form errors: ", errors)    
       toast({
         variant: "destructive",
         title: "Validation errors",
@@ -297,7 +306,7 @@ useEffect(() => {
               setValue("profileType", value as "employer" | "freelancer")
               handleRoleSelection(value as "freelancer" | "employer")
             }}
-            value={profileType}
+            value={profileType}            
           >
             <SelectTrigger className="w-[300px]">
               <SelectValue placeholder="Select profile type" />
@@ -310,26 +319,30 @@ useEffect(() => {
         </div>
       ) : null}
 
-      {profileType === "employer" ? (
+      {profileType === "employer" && (
         <div className="space-y-4">
           <Input
             label="Company Name"
             {...register("companyName")}
+            defaultValue={employerProfile?.companyName}
             error={employerErrors?.companyName?.message}
           />
           <Input
             label="Company Description"
             type="textarea"
             {...register("companyDescription")}
+            defaultValue={employerProfile?.companyDescription}
             error={employerErrors?.companyDescription?.message}
           />
           <Input
             label="Website"
             {...register("website")}
+            defaultValue={employerProfile?.website}
             error={employerErrors?.website?.message}
           />
         </div>
-      ) : profileType === "freelancer" ? (
+      )}
+       { profileType === "freelancer" && (
         <div className="space-y-4 mt-4">
           <Input
             label="Headline"
@@ -405,7 +418,7 @@ useEffect(() => {
             </Button>
           </div>
         </div>
-      ) : null}
+      )}
 
       {profileType && (
         <div className="mt-4">          

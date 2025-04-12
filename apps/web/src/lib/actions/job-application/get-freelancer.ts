@@ -9,16 +9,16 @@ import { validateResponse } from "@/lib/validate-response";
 
 // Add this function to fetch employer data
 export async function getFreelancerProfile(userId: string) {  
-  console.log("At the beginning of teh request");
+  console.log("At the beginning of the request");
   const session =  await getSession();
   const url = `${API_URL_LOCAL}/freelancer/profile/${userId}`;
 
   try {
     const response = await fetch(url, { 
-      method: "GET",       
-      headers: {
-        Cookie: session.cookie,        
-    },
+        method: "GET",       
+        headers: {
+          Cookie: session.cookie,        
+      },
     });   
     console.log("The response: ", response);
     await validateResponse(response);
