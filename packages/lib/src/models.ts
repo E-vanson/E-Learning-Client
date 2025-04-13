@@ -1,5 +1,5 @@
 export type UserRole = "user" | "contributor" | "author" | "admin" | "owner";
-export type UserJobRole = "freelancer" | "employer" | "user";
+export type UserJobRole = "freelancer" | "employer" | "user" | "hybrid";
 export type PostStatus = "draft" | "published";
 export type JobStatus = "draft" | "closed" | "active";
 export type PostVisibility = "public" | "member" | "paid_member";

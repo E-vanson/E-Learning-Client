@@ -1,7 +1,13 @@
 "use client";
 
-
-import { firebaseAuth } from "@/lib/firebase.config";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle
+} from "@elearning/ui";
 import { updateUserEmployerProfile } from "@/lib/actions/user/update-employer-profile";
 import { updateUserFreelancerProfile } from "@/lib/actions/user/update-freelancer-profile";
 import { createUserJobProfile } from "@/lib/actions/user/create-job-profile";
@@ -16,9 +22,11 @@ import { useForm, useFieldArray, FieldErrors } from "react-hook-form";
 import { z } from "zod";
 import { getFreelancerProfile } from "@/lib/actions/job-application/get-freelancer";
 import { getEmployerData } from "@/lib/actions/job-application/get-employer";
+import { deleteEmployerProfile } from "@/lib/actions/user/delete-employer-profile";
+import { deleteFreelancerProfile } from "@/lib/actions/user/delete-freelancer-profile";
 
 const baseSchema = z.object({
-  profileType: z.enum(["employer", "freelancer", "user"])
+  profileType: z.enum(["employer", "freelancer", "user", "hybrid"])
 });
 
 const employerSchema = baseSchema.extend({
@@ -68,7 +76,7 @@ const freelancerSchema = baseSchema.extend({
 
 type FormData = z.infer<typeof employerSchema | typeof freelancerSchema>;
 
-type ProfileType = "employer" | "freelancer" | "user";
+type ProfileType = "employer" | "freelancer" | "user" | "hybrid";
 
 type EmployerFormType = {
   profileType: ProfileType;
@@ -94,6 +102,7 @@ export default function JobProfile({ user }: { user: User }) {
   const [freelancerProfile, setFreelancerProfile] = useState<Freelancer | null>(null);
   const [employerProfile, setEmployerProfile] = useState<EmployerProfile | null>(null);
   const [loading, setLoading] = useState(true);  
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const freelancer: Freelancer = {
     id: '',
     userId: user.id,
@@ -158,7 +167,8 @@ export default function JobProfile({ user }: { user: User }) {
     const loadProfile = async () => {
       try {
         if (user.jobRole === "freelancer") {
-          const data = await getFreelancerProfile(user.id);  
+          const data = await getFreelancerProfile(user.id); 
+          console.log("The freelancer data: ", data);
           setFreelancerProfile(data);          
           setProfileType("freelancer");
         } else if (user.jobRole === "employer") {
@@ -279,6 +289,37 @@ useEffect(() => {
       toast({ variant: "destructive", title: parseErrorResponse(error) });
     }
   };
+
+  const handleDeleteProfile = async () => {
+  try {
+    if (profileType === "employer" && employerProfile?.id) {
+      const result = await deleteEmployerProfile(employerProfile.id);
+      if (result) {
+      setEmployerProfile(null);
+      setProfileType("user");
+      toast({ variant: "success", title: "Employer profile deleted!" });
+      } else {
+        toast({ variant: "destructive", title: "Employer profile failed to deleted!" });          
+      }     
+      
+    } else if (profileType === "freelancer" && freelancerProfile?.id) {
+      console.log("The id of the profile to be deleted: ", freelancerProfile?.id)
+      const result = await deleteFreelancerProfile(freelancerProfile.id);
+      if (result) {
+        setProfileType("user");
+        setFreelancerProfile(null);        
+      toast({ variant: "success", title: "Freelancer profile deleted!" });
+      } else {
+        toast({ variant: "destructive", title: "Freelancer profile failed to deleted!" });        
+    }      
+      }      
+    setProfileType("user");
+  } catch (error) {
+    toast({ variant: "destructive", title: parseErrorResponse(error) });
+  }finally {
+    setShowDeleteDialog(false);
+  }
+};
 
   function isEmployer(profile: EmployerProfile | Freelancer): profile is EmployerProfile {
     return 'companyName' in profile;    
@@ -421,17 +462,55 @@ console.log("The current profile type: ", profileType)
       )}
 
       {profileType && (
-        <div className="mt-4">          
-          <Button type="submit" disabled={isSubmitting}>
-          {isSubmitting && <LoaderCircle className="mr-2 animate-spin mt-4" />}
+      <div className="mt-4 flex gap-2">
+        <Button type="submit" disabled={isSubmitting}>
+          {isSubmitting && <LoaderCircle className="mr-2 animate-spin" />}
           {(employerProfile?.id || freelancerProfile?.id) ? "Update Profile" : "Create Profile"}
-          </Button>
-          
-        </div>
+        </Button>
         
+        {(employerProfile?.id || freelancerProfile?.id) && (
+          <Button
+            type="button"
+            variant="destructive"
+            onClick={() => setShowDeleteDialog(true)}
+            disabled={isSubmitting}
+          >
+            Delete {profileType.charAt(0).toUpperCase() + profileType.slice(1)} Profile
+          </Button>
+        )}
+      </div>
       )}
+      <Dialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+  <DialogContent>
+    <DialogHeader>
+      <DialogTitle>Confirm Profile Deletion</DialogTitle>
+      <DialogDescription>
+        Are you sure you want to delete your {profileType} profile? 
+        This action cannot be undone.
+      </DialogDescription>
+    </DialogHeader>
+    <DialogFooter>
+      <Button 
+        variant="outline" 
+        onClick={() => setShowDeleteDialog(false)}
+      >
+        Cancel
+      </Button>
+      <Button 
+        variant="destructive" 
+        onClick={handleDeleteProfile}
+        disabled={isSubmitting}
+      >
+        {isSubmitting ? (
+          <LoaderCircle className="mr-2 animate-spin" />
+        ) : null}
+        Confirm Delete
+      </Button>
+    </DialogFooter>
+  </DialogContent>
+     </Dialog>
+
     </form>
   );
   
 }
-
