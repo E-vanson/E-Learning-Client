@@ -77,6 +77,22 @@ export default function Header({ user }: { user?: User | null }) {
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
               <Link href="/profile/bookmarks">My Bookmarks</Link>
+            </DropdownMenuItem>            
+            <DropdownMenuItem asChild>
+              {!user ? null : user.jobRole === 'hybrid' ? (
+                <div className="flex flex-col">
+                  <Link href="/profile/freelancer/dashboard" className="p-2 hover:bg-muted">
+                    Freelancer Dashboard
+                  </Link>
+                  <Link href="/profile/employer/dashboard" className="p-2 hover:bg-muted">
+                    Employer Dashboard
+                  </Link>
+                </div>
+              ) : user.jobRole === 'freelancer' ? (
+                <Link href="/freelancer/dashboard/learnings">Freelancer Dashboard</Link>
+              ) : user.jobRole === 'employer' ? (
+                <Link href="/employer/dashboard/learnings">My Learnings</Link>
+              ) : null}
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem
@@ -86,7 +102,7 @@ export default function Header({ user }: { user?: User | null }) {
               className="text-destructive focus:text-destructive"
             >
               Log out
-            </DropdownMenuItem>
+            </DropdownMenuItem>           
           </DropdownMenuContent>
         </DropdownMenu>
       );
