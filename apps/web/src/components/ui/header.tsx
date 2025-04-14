@@ -84,7 +84,7 @@ export default function Header({ user }: { user?: User | null }) {
                   <Link href="/profile/freelancer/dashboard" className="p-2 hover:bg-muted">
                     Freelancer Dashboard
                   </Link>
-                  <Link href="/profile/employer/dashboard" className="p-2 hover:bg-muted">
+                  <Link href="/employer" className="p-2 hover:bg-muted">
                     Employer Dashboard
                   </Link>
                 </div>

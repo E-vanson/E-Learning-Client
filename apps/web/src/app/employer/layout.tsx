@@ -4,13 +4,13 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from "@elearning/ui";
-import { BookText, Bookmark, Settings, User, ContactRound } from "lucide-react";
+import { BookText, Bookmark, Settings, User, ContactRound, BookCheck ,Ticket } from "lucide-react";
 import Link from "next/link";
 import { ReactNode } from "react";
 
 const iconSize = 20;
 
-export default function ProfileLayout({ children }: { children: ReactNode }) {
+export default function DashboardLayout({ children }: { children: ReactNode }) {
   function menuLink({
     href,
     title,
@@ -31,39 +31,24 @@ export default function ProfileLayout({ children }: { children: ReactNode }) {
   const content = (
     <>
       <div className="text-muted-foreground px-1 mb-2 text-sm uppercase hidden lg:block ">
-        ACCOUNT
+        Employer
       </div>
       <div className="flex flex-col gap-1">
         {menuLink({
           href: "/profile",
-          title: "Profile",
-          icon: <User className="me-2" size={iconSize} />,
-        })}
-        {menuLink({
-          href: "/profile/learnings",
-          title: "Learnings",
-          icon: <BookText className="me-2" size={iconSize} />,
-        })}
-        {menuLink({
-          href: "/profile/bookmarks",
-          title: "Bookmarks",
-          icon: <Bookmark className="me-2" size={iconSize} />,
-        })}
-        {menuLink({
-          href: "/profile/freelancer",
-          title: "Freelancer",
-          icon: <Settings className="me-2" size={iconSize} />,
-        })}
-        {menuLink({
-          href: "/profile/employer",
-          title: "Employer",
+          title: "Applications",
           icon: <ContactRound className="me-2" size={iconSize} />,
         })}
         {menuLink({
-          href: "/profile/setting",
-          title: "Setting",
-          icon: <Settings className="me-2" size={iconSize} />,
+          href: "/profile/learnings",
+          title: "Contracts",
+          icon: <Ticket className="me-2" size={iconSize} />,
         })}
+        {menuLink({
+          href: "/profile/bookmarks",
+          title: "Reviews",
+          icon: <BookCheck className="me-2" size={iconSize} />,
+        })}       
         
       </div>
     </>

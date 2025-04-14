@@ -242,6 +242,13 @@ export interface DashboardSummary {
   enrolledByLevel: { [key: string]: number };
 }
 
+export interface EmployerDashboardSummary {
+  jobCount: number;
+  applicationCount: number;
+  reviewcount: number;
+  contractCount: number
+}
+
 export interface MonthlyEnrollmentDto {
   data: { [key: string]: number | undefined };
 }
