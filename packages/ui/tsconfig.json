@@ -4,6 +4,6 @@
     "outDir": "dist",
     "rootDir": "src"
   },
-  "include": ["."],
+  "include": [".", "../../apps/web/src/components/ui/datepicker.tsx"],
   "exclude": ["node_modules", "tailwind.config.ts", "dist"]
 }

@@ -6,6 +6,7 @@ import { Card, CardContent, CardFooter, Separator } from "@elearning/ui";
 import { DollarSign, Edit, GraduationCap, UsersIcon, BriefcaseBusiness } from "lucide-react";
 import { cookies } from "next/headers";
 import Link from "next/link";
+import EmployerJobs from "./jobs/page";
 
 const getData = async () => {
   const url = `${API_URL_LOCAL}/employer/dashboard/summary`;
@@ -23,7 +24,12 @@ const getData = async () => {
   return (await resp.json()) as EmployerDashboardSummary;
 };
 
-export default async function EmployerDashboard() {
+export default async function EmployerDashboard({
+  searchParams
+}: {
+  searchParams: { [key: string]: string | undefined };
+  }) {
+  
   const data = await getData();
 
   return (
@@ -97,15 +103,11 @@ export default async function EmployerDashboard() {
             </Link>
           </CardFooter>
         </Card>
+      </div>      
+      <div className="ml-6">
+        <EmployerJobs searchParams={searchParams} />        
       </div>
-      {/* <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
-        <div className="lg:col-span-8">
-          <EnrolledLineChart />
-        </div>
-        <div className="lg:col-span-4">
-          <EnrolledPieChart summary={data} />
-        </div>
-      </div> */}
+        
     </>
   );
 }

@@ -23,6 +23,7 @@
     "@nextui-org/navbar": "^2.0.37",
     "@reduxjs/toolkit": "^2.2.7",
     "ai": "^3.3.43",
+    "date-fns": "^3.6.0",
     "firebase": "^10.13.2",
     "framer-motion": "^11.0.24",
     "jose": "^5.4.1",
