@@ -101,7 +101,7 @@ export default function Footer() {
           <div className="flex flex-col md:flex-row items-center  justify-center md:justify-between  gap-4 text-sm text-muted-foreground text-center">
             <div>{copyRight}</div>
             <div className="flex items-center gap-4">
-              <div className="text-nowrap">
+              {/* <div className="text-nowrap">
                 Made with &#9829; by{" "}
                 <a
                   href="https://phyohtetarkar.github.io/"
@@ -110,7 +110,7 @@ export default function Footer() {
                 >
                   Phyo Htet Arkar
                 </a>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

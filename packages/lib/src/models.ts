@@ -11,7 +11,7 @@ export type QuizType = "multiple_choice" | "single_choice" | "short_answer";
 export type BudgetType = "fixed" | "hourly";
 export type ExperienceLevel = "beginner" | "intermediate" | "experienced"
 export type EstimatedTime = "1 Month" | "1 - 2 Months" | "3 Months" | "More Than 3 Months";
-export type ProposalStatus = "submitted" | "reviewed" | "accepted" | "rejected" | "shortlisted";
+export type ProposalStatus = "pending" | "accepted" | "rejected";
 
 export interface Page<T> {
   contents: T[];
@@ -247,6 +247,12 @@ export interface EmployerDashboardSummary {
   applicationCount: number;
   reviewcount: number;
   contractCount: number
+}
+
+export interface EmployerProposalsSummary {
+  proposalCount: number;
+  contractCount: number;
+  reviewCount: number;
 }
 
 export interface MonthlyEnrollmentDto {

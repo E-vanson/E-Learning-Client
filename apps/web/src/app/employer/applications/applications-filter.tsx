@@ -11,9 +11,8 @@ import {
 } from "@elearning/ui"
 import { Button } from "@elearning/ui"
 import { format, subDays } from "date-fns"
-import JobCreateButton from "./job-create-button"
 
-export function JobsFilter() {
+export function ApplicationsFilter() {
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
@@ -96,9 +95,7 @@ export function JobsFilter() {
               </SelectContent>
             </Select>
           </div>
-        </div>
-
-        <JobCreateButton />
+        </div>        
       </div>
 
       <div className="flex flex-col sm:flex-row gap-4">

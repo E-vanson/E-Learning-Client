@@ -38,7 +38,7 @@ export default async function EmployerDashboard({
         <Card className="shadow-none">
           <CardContent className="p-4">
             <div className="flex items-center space-x-4">
-              <GraduationCap className="size-10 text-muted-foreground" />
+              <BriefcaseBusiness className="size-10 text-muted-foreground" />
               <div className="flex flex-col">
                 <div className="text-muted-foreground mb-1">My Jobs</div>
                 <h2 className="">{formatAbbreviate(data.jobCount)}</h2>
@@ -47,7 +47,7 @@ export default async function EmployerDashboard({
           </CardContent>
           <Separator />
           <CardFooter className="bg-muted/50 px-4 py-3">
-            <Link href="/admin/courses" className="text-teal">
+            <Link href="/employer" className="text-teal">
               View all
             </Link>
           </CardFooter>
@@ -64,7 +64,7 @@ export default async function EmployerDashboard({
           </CardContent>
           <Separator />
           <CardFooter className="bg-muted/50 px-4 py-3">
-            <Link href="/admin/posts" className="text-teal">
+            <Link href="/employer/proposals" className="text-teal">
               View all
             </Link>
           </CardFooter>
@@ -81,7 +81,7 @@ export default async function EmployerDashboard({
           </CardContent>
           <Separator />
           <CardFooter className="bg-muted/50 px-4 py-3">
-            <Link href="/admin/subscribers" className="text-teal">
+            <Link href="/employer/contracts" className="text-teal">
               View all
             </Link>
           </CardFooter>
@@ -98,7 +98,7 @@ export default async function EmployerDashboard({
           </CardContent>
           <Separator />
           <CardFooter className="bg-muted/50 px-4 py-3">
-            <Link href="/admin/users" className="text-teal">
+            <Link href="/employer/reviews" className="text-teal">
               View all
             </Link>
           </CardFooter>

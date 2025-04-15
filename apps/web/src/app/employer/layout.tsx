@@ -35,17 +35,17 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
       </div>
       <div className="flex flex-col gap-1">
         {menuLink({
-          href: "/profile",
+          href: "/employer/applications",
           title: "Applications",
           icon: <ContactRound className="me-2" size={iconSize} />,
         })}
         {menuLink({
-          href: "/profile/learnings",
+          href: "/employer/conracts",
           title: "Contracts",
           icon: <Ticket className="me-2" size={iconSize} />,
         })}
         {menuLink({
-          href: "/profile/bookmarks",
+          href: "/employer/reviews",
           title: "Reviews",
           icon: <BookCheck className="me-2" size={iconSize} />,
         })}       

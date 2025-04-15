@@ -1,5 +1,3 @@
-// "use client"
-
 import { API_URL_LOCAL } from "@/lib/constants";
 import { validateResponse } from "@/lib/validate-response";
 import {
@@ -17,7 +15,7 @@ import {
   TableHeader,
   TableRow,
 } from "@elearning/ui";
-import { JobStatus, Page, Job } from "@elearning/lib/models";
+import { JobStatus, Page, Job, ProposalStatus, Proposal } from "@elearning/lib/models";
 import {
   buildQueryParams,
   formatAbbreviate,
@@ -25,17 +23,17 @@ import {
 } from "@elearning/lib/utils";
 import { cookies } from "next/headers";
 import Link from "next/link";
-import JobActionButtons from "./job-action-buttons";
-import { JobsFilter } from "./jobs-filter";
+import ApplicationActionButtons from "./application-action-buttons";
+import { JobsFilter } from "../jobs/jobs-filter";
 
-interface EmployerJobsProps {
+interface ApplicationJobProps {
   searchParams: { [key: string]: string | undefined };
 }
 
-const getJobs = async ({ searchParams }: EmployerJobsProps) => {
+const getProposals = async ({ searchParams }: ApplicationJobProps) => {
   const query = buildQueryParams({ ...searchParams, limit: 10 });
 
-  const url = `${API_URL_LOCAL}/employer/dashboard/jobs${query}`;
+  const url = `${API_URL_LOCAL}/employer/dashboard/proposals${query}`;
 
   const resp = await fetch(url, {
     headers: {
@@ -46,30 +44,30 @@ const getJobs = async ({ searchParams }: EmployerJobsProps) => {
 
   await validateResponse(resp);
 
-  return (await resp.json()) as Page<Job>;
+  return (await resp.json()) as Page<Proposal>;
 };
 
-export default async function EmployerJobs({ searchParams }: EmployerJobsProps) {
-  const data = await getJobs({searchParams});
+export default async function EmployerProposals({ searchParams }: ApplicationJobProps) {
+  const data = await getProposals({searchParams});
   console.log("The data: ", data);
 
-  const statusView = (status: JobStatus) => {
-    if (status === "draft") {
+  const statusView = (status: ProposalStatus) => {
+    if (status === "pending") {
       return (
-        <span className="text-muted-foreground font-medium text-sm">Draft</span>
+        <span className="text-muted-foreground font-medium text-sm">Pending</span>
       );
-    } else if (status === 'active') {
+    } else if (status === 'accepted') {
         return (
-        <span className="text-muted-foreground font-medium text-sm">Active</span>
+        <span className="text-muted-foreground font-medium text-sm">Accepted</span>
       );
     }            
-    return <span className="text-teal font-medium text-sm">Closed</span>;
+    return <span className="text-teal font-medium text-sm">Rejected</span>;
   };
 
   return (
     <>
       <div className="flex justify-between mb-4">
-        <h2>Jobs</h2>
+        <h2>Job Applications</h2>
         <div className="flex">
           <JobsFilter/>
         </div>
@@ -77,12 +75,12 @@ export default async function EmployerJobs({ searchParams }: EmployerJobsProps) 
       </div>      
       <Table>
         {data.contents.length === 0 && (
-          <TableCaption className="text-start">No jobs found</TableCaption>
+          <TableCaption className="text-start">No Applications Found</TableCaption>
         )}
         <TableHeader>
           <TableRow>
             <TableHead className="uppercase min-w-[300px] w-full">
-              Job
+              Applications
             </TableHead>
             <TableHead className="uppercase min-w-[150px]">Status</TableHead>
             <TableHead className="uppercase min-w-[150px]">Action</TableHead>
@@ -94,9 +92,9 @@ export default async function EmployerJobs({ searchParams }: EmployerJobsProps) 
               <TableRow key={p.id}>
                 <TableCell>
                   <div className="flex flex-col">
-                    <h6 className="mb-0.5">{p.title ?? "(Untitled)"}</h6>
+                    <h6 className="mb-0.5">{p.job.title ?? "(Untitled)"}</h6>
                     <span className="text-muted-foreground text-sm mb-2">
-                      By&nbsp;{p.employer.companyName}      
+                      By&nbsp;{p.bidAmount}      
                        &nbsp;-&nbsp;
                       {formatRelativeTimestamp(p.audit?.createdAt)}
                     </span>                   
@@ -106,7 +104,7 @@ export default async function EmployerJobs({ searchParams }: EmployerJobsProps) 
                   {statusView(p?.status)}
                 </span>
                 <TableCell>
-                  <JobActionButtons job={p} />
+                  <ApplicationActionButtons proposal={p} />
                 </TableCell>
               </TableRow>
             );

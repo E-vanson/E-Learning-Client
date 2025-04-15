@@ -18,12 +18,12 @@ import {
   TooltipTrigger,
   useToast,
 } from "@elearning/ui";
-import { Job } from "@elearning/lib/models";
+import { Job, Proposal } from "@elearning/lib/models";
 import { Edit, LoaderCircle, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 
-export default function JobActionButtons({ job }: { job: Job }) {
+export default function ApplicationActionButtons({ proposal }: { proposal: Proposal }) {
   const [isAlertOpen, setAlertOpen] = useState(false);
   const [isDeleting, setDeleting] = useState(false);
 
@@ -32,7 +32,7 @@ export default function JobActionButtons({ job }: { job: Job }) {
   const handleDelete = async () => {
     try {
       setDeleting(true);
-      await deleteJob(job.id);
+      await deleteJob(proposal.id);
       setAlertOpen(false);
     } catch (error) {
       toast({
@@ -51,12 +51,12 @@ export default function JobActionButtons({ job }: { job: Job }) {
         <Tooltip delayDuration={300}>
           <TooltipTrigger>
             <Button variant="default" asChild size="icon">
-              <Link href={`/employer/jobs/${job.id}`}>
+              <Link href={`/employer/jobs/${proposal.id}`}>
                 <Edit size={20} />
               </Link>
             </Button>
           </TooltipTrigger>
-          <TooltipContent>Edit job</TooltipContent>
+          <TooltipContent>Edit proposal</TooltipContent>
         </Tooltip>
 
         <AlertDialog open={isAlertOpen} onOpenChange={setAlertOpen}>
@@ -76,7 +76,7 @@ export default function JobActionButtons({ job }: { job: Job }) {
             <AlertDialogHeader>
               <AlertDialogTitle>Confirm Delete</AlertDialogTitle>
               <AlertDialogDescription>
-                Are you sure to delete job: &ldquo;{job.title ?? "(Untitled)"}
+                Are you sure to delete job: &ldquo;{proposal.job.title ?? "(Untitled)"}
                 &ldquo;?
               </AlertDialogDescription>
             </AlertDialogHeader>
