@@ -23,7 +23,7 @@ function BannerImage({ className }: { className?: string }) {
       transition={{ duration: 0.8, ease: "easeOut" }}
     >
       <Image
-        src={image}
+        src={'http://localhost:3080/uploads/2025/03/istockphoto-1010593984-1024x1024.jpg'}
         alt="Hero Banner"
         fill
         sizes="1000vh"

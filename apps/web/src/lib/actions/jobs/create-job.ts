@@ -7,6 +7,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 export async function createJob(body: any) {
+  console.log("Reached to create job:", body)
   const session = await getSession();
   const url = `${API_URL_LOCAL}/employer/jobs`;
 
@@ -28,8 +29,8 @@ export async function createJob(body: any) {
     const jobId = await resp.text();
     console.log("Received Job ID:", jobId);
     
-    revalidatePath("/admin/jobs");
-    redirect(`/admin/jobs`);
+    revalidatePath("/jobs");
+    redirect(`/jobs`);
   } catch (error) {
     console.error("Job creation failed:", error);
     throw error;

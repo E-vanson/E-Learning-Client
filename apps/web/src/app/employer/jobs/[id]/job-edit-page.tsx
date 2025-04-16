@@ -121,7 +121,7 @@ export default function JobEditPage({ job }: JobEditPageProps) {
     } catch (error) {
       toast({
         title: "Error",
-        description: parseErrorResponse(error),
+        description: "Error Updating: Check your Network!",
         variant: "destructive",
       });
       setSaving(false);
@@ -150,7 +150,7 @@ export default function JobEditPage({ job }: JobEditPageProps) {
         <BreadcrumbList>
             <BreadcrumbItem>
             <BreadcrumbLink asChild>
-                <Link href="/admin/jobs">Jobs</Link>
+                <Link href="/admin\\/jobs">Jobs</Link>
             </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />

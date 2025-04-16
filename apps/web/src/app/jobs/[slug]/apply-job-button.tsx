@@ -36,7 +36,12 @@ export default function ApplyJobButton({
       router.push("/verify-email");
     }
 
-    if (user.jobRole !== "freelancer") {
+    if (user.role !== "admin" || user.jobRole !== "freelancer" || user.jobRole !== "freelancer") {
+      toast({
+        title: "Error",
+        description: "Create A Freelancer Profile To Apply For A Job!!",
+        variant: "destructive",
+     });
       router.push("/freelancer-profile");
     }
 

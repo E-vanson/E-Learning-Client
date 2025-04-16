@@ -89,7 +89,7 @@ const HeroSection = () => {
             </motion.div>
             
             <motion.div
-              className="text-black font-space-grotesk text-lg lg:text-xl max-w-2xl mb-6 md:mb-0 mx-auto md:mx-0"
+              className="text-black dark:text-foreground font-space-grotesk text-lg lg:text-xl max-w-2xl mb-6 md:mb-0 mx-auto md:mx-0"
               variants={textVariants}
             >
               Empowering Africa Through Artificial Intelligence – Unlocking potential, driving innovation, and shaping the future of technology in Africa.

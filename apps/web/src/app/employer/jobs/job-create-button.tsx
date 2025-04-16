@@ -106,6 +106,11 @@ export default function JobCreateButton() {
                 await createJob({
                   ...values                 
                 });
+                toast({
+                  title: "Success",
+                  description: "Job Created Successfully",
+                  variant: "success",
+                });
                 setOpen(false);
               } catch (error) {
                 toast({

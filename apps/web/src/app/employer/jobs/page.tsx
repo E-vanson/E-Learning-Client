@@ -102,7 +102,7 @@ export default async function EmployerJobs({ searchParams }: EmployerJobsProps) 
                     </span>                   
                   </div>
                 </TableCell>
-                <span className="text-muted-foreground text-sm mb-2">
+                <span className="text-muted-foreground text-sm mb-0.5">
                   {statusView(p?.status)}
                 </span>
                 <TableCell>
