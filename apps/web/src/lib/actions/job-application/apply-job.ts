@@ -3,23 +3,35 @@
 import { getSession } from "@/lib/auth";
 import { API_URL_LOCAL } from "@/lib/constants";
 import { validateResponse } from "@/lib/validate-response";
+import { Proposal } from "@elearning/lib/models";
 import { revalidatePath } from "next/cache";
 
-export async function applyJob(jobId: number, revalidate?: string) {
+export async function applyJob(jobId: number, body: Proposal, revalidate?: string) {
   const session = await getSession();
 
   const url = `${API_URL_LOCAL}/proposals/${jobId}`;
 
-  const resp = await fetch(url, {
-    method: "POST",
-    headers: {
-      Cookie: session.cookie,
-    },
-  });
+  try {
+     const resp = await fetch(url, {
+      method: "POST",
+      body: JSON.stringify(body),
+      headers: {
+        Cookie: session.cookie,
+        'Content-Type': 'application/json',
+      },
+    });
+
+  if (!resp.ok) {
+      const errorText = await resp.text();
+      throw new Error(`HTTP ${resp.status}: ${errorText}`);
+    }
 
   await validateResponse(resp);
 
   if (revalidate) {
     revalidatePath(revalidate);
+  }
+  } catch (err) {
+    
   }
 }

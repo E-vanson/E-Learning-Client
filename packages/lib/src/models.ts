@@ -118,13 +118,14 @@ export interface Post {
   }
 
 export interface Proposal {
-  id: number;
-  job: Job;
-  freelancer: Freelancer;
+  id?: number;
+  job?: Job;
+  freelancer?: Freelancer;
   coverLetter: string;
   bidAmount: number;
   estimatedTime: EstimatedTime;
-  status: ProposalStatus;
+  status?: ProposalStatus;
+  fileAttachment?: string;
   audit?: Audit;
   }
 
