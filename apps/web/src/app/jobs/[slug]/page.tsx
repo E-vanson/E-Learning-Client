@@ -17,12 +17,14 @@ import {
   DollarSign,
   MapPin,
   Star,
-  User,
+  User2,
 } from "lucide-react";
 import Link from "next/link";
 import { getJobData } from "@/lib/actions/job-application/get-job";
 import { API_URL_LOCAL } from "@/lib/constants";
-import { notFound } from "next/navigation";
+import { cookies } from "next/headers";
+import { notFound, redirect } from "next/navigation";
+import { User } from "@elearning/lib/models";
 import { getSession } from "@/lib/auth";
 import { getEmployerData } from "@/lib/actions/job-application/get-employer";
 import ApplyJobButton from "./apply-job-button";
@@ -31,7 +33,22 @@ interface PageProps {
   params: { slug: string };
 }
 
+const getUser = async () => {
+  const url = `${API_URL_LOCAL}/profile`;
+  const resp = await fetch(url, {
+    headers: {
+      Cookie: cookies().toString(),
+    },
+  });
+
+  return resp.ok ? ((await resp.json()) as User) : null;
+};
+
 export default async function JobPage({ params }: PageProps) {
+  const user = await getUser();
+  // if (!user) {
+  //   redirect("/login");
+  // }
   console.log("Inside job....", params.slug)
   // const session = await getSession();
   
@@ -158,7 +175,7 @@ export default async function JobPage({ params }: PageProps) {
                   Apply Now
                 </Button> */}
 
-                <ApplyJobButton/>
+                <ApplyJobButton params={params}/>
 
                 <Separator className="my-5" />
 
@@ -195,7 +212,7 @@ export default async function JobPage({ params }: PageProps) {
                     <h4 className="font-semibold mb-4">Employer Information</h4>
                     <div className="space-y-3">
                       <div className="flex items-center">
-                        <User className="size-4 text-teal mr-2" />
+                        <User2 className="size-4 text-teal mr-2" />
                         <span>Company:</span>
                         <span className="ml-auto text-muted-foreground">
                           {employer.companyName}

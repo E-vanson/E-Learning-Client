@@ -6,9 +6,9 @@ import { validateResponse } from "@/lib/validate-response";
 import { Proposal } from "@elearning/lib/models";
 import { revalidatePath } from "next/cache";
 
-export async function applyJob(jobId: number, body: Proposal, revalidate?: string) {
+export async function applyJob(jobId: string, body: Proposal, revalidate?: string) {
   const session = await getSession();
-
+  console.log("Inside the apply job api call");
   const url = `${API_URL_LOCAL}/proposals/${jobId}`;
 
   try {
@@ -31,7 +31,8 @@ export async function applyJob(jobId: number, body: Proposal, revalidate?: strin
   if (revalidate) {
     revalidatePath(revalidate);
   }
+    return true;
   } catch (err) {
-    
+    console.error("Job Application Failed")
   }
 }

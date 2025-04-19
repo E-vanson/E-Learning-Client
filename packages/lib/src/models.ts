@@ -121,11 +121,11 @@ export interface Proposal {
   id?: number;
   job?: Job;
   freelancer?: Freelancer;
-  coverLetter: string;
-  bidAmount: number;
-  estimatedTime: EstimatedTime;
+  cover_letter: string;
+  bid_amount: number;
+  estimated_time: EstimatedTime;
   status?: ProposalStatus;
-  fileAttachment?: string;
+  file_attachment?: string;
   audit?: Audit;
   }
 
