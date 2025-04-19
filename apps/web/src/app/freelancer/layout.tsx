@@ -31,26 +31,21 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
   const content = (
     <>
       <div className="text-muted-foreground px-1 mb-2 text-sm uppercase hidden lg:block ">
-        Employer Dashboard
+        Freelancer Dashboard
       </div>
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-1">        
         {menuLink({
-          href: "/employer",
-          title: "Jobs",
-          icon: <BriefcaseBusiness className="me-2" size={iconSize} />,
-        })}
-        {menuLink({
-          href: "/employer/applications",
+          href: "/freelancer/applications",
           title: "Applications",
           icon: <ContactRound className="me-2" size={iconSize} />,
         })}
         {menuLink({
-          href: "/employer/conracts",
+          href: "/freelancer/conracts",
           title: "Contracts",
           icon: <Ticket className="me-2" size={iconSize} />,
         })}
         {menuLink({
-          href: "/employer/reviews",
+          href: "/freelancer/reviews",
           title: "Reviews",
           icon: <BookCheck className="me-2" size={iconSize} />,
         })}       

@@ -119,12 +119,12 @@ export interface Post {
 
 export interface Proposal {
   id?: number;
-  job?: Job;
+  job: Job;
   freelancer?: Freelancer;
   cover_letter: string;
   bid_amount: number;
   estimated_time: EstimatedTime;
-  status?: ProposalStatus;
+  status: ProposalStatus;
   file_attachment?: string;
   audit?: Audit;
   }
@@ -254,6 +254,11 @@ export interface EmployerProposalsSummary {
   proposalCount: number;
   contractCount: number;
   reviewCount: number;
+}
+
+export interface FreelancerDashboardSummary {
+  proposalCount: number;
+  contractCount: number;
 }
 
 export interface MonthlyEnrollmentDto {

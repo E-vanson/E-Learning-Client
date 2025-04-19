@@ -51,8 +51,7 @@ export default function ApplyJobDialog({ job, freelancer }: ApplyJobDialogProps)
   const [fileAttachment, setFileAttachment] = useState<string | null>(null);
   const [fileName, setFileName] = useState<string | null>(null);
   const jobId = job.id.toString();  
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);  
   const { register, handleSubmit, formState, reset, control } = useForm<JobProposalForm>({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -138,9 +137,11 @@ export default function ApplyJobDialog({ job, freelancer }: ApplyJobDialogProps)
             jobId,
             {
                 ...values,
+                status: 'pending',
                 bid_amount: parseFloat(values.bid_amount),
                 file_attachment: fileUrl,
-                job: job
+                job: job,
+                freelancer: freelancer
             },
             'true'
             );
@@ -272,7 +273,7 @@ export default function ApplyJobDialog({ job, freelancer }: ApplyJobDialogProps)
                 Cancel
               </Button>
             </DialogClose>
-            <Button type="submit" disabled={formState.isSubmitting}>
+            <Button type="submit" variant='teal' disabled={formState.isSubmitting}>
               {formState.isSubmitting && (
                 <LoaderCircle className="animate-spin mr-2" />
               )}

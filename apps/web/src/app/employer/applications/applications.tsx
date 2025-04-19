@@ -94,10 +94,12 @@ export default async function EmployerProposals({ searchParams }: ApplicationJob
                   <div className="flex flex-col">
                     <h6 className="mb-0.5">{p.job.title ?? "(Untitled)"}</h6>
                     <span className="text-muted-foreground text-sm mb-2">
-                      By&nbsp;{p.bidAmount}      
-                       &nbsp;-&nbsp;
+                      By&nbsp;{p.freelancer?.headline}                            
+                    </span>  
+                    <span className="text-muted-foreground text-sm mb-2">
+                       Applied on &nbsp;-&nbsp;
                       {formatRelativeTimestamp(p.audit?.createdAt)}
-                    </span>                   
+                    </span>
                   </div>
                 </TableCell>
                 <span className="text-muted-foreground text-sm mb-2">
