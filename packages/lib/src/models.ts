@@ -118,7 +118,7 @@ export interface Post {
   }
 
 export interface Proposal {
-  id?: number;
+  id: number;
   job: Job;
   freelancer?: Freelancer;
   cover_letter: string;
@@ -259,6 +259,8 @@ export interface EmployerProposalsSummary {
 export interface FreelancerDashboardSummary {
   proposalCount: number;
   contractCount: number;
+  proposalReviewCount: number;
+  proposals: Proposal[];
 }
 
 export interface MonthlyEnrollmentDto {

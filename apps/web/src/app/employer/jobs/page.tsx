@@ -60,10 +60,10 @@ export default async function EmployerJobs({ searchParams }: EmployerJobsProps) 
       );
     } else if (status === 'active') {
         return (
-        <span className="text-muted-foreground font-medium text-sm">Active</span>
+        <span className="text-teal font-medium text-sm">Active</span>
       );
     }            
-    return <span className="text-teal font-medium text-sm">Closed</span>;
+    return <span className="text-destructive font-medium text-sm">Closed</span>;
   };
 
   return (

@@ -9,6 +9,12 @@ import { DollarSign, Edit, GraduationCap, UsersIcon, BriefcaseBusiness } from "l
 import { cookies } from "next/headers";
 import Link from "next/link";
 import EmployerProposals from "./applications";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Job Applications",
+  description: process.env.NEXT_PUBLIC_APP_DESC
+}
 
 const getData = async () => {
   const url = `${API_URL_LOCAL}/employer/dashboard/summary`;

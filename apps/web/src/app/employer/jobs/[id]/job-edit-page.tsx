@@ -150,7 +150,7 @@ export default function JobEditPage({ job }: JobEditPageProps) {
         <BreadcrumbList>
             <BreadcrumbItem>
             <BreadcrumbLink asChild>
-                <Link href="/admin\\/jobs">Jobs</Link>
+                <Link href="/employer">Jobs</Link>
             </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />

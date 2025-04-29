@@ -5,6 +5,7 @@ import { formatAbbreviate } from "@elearning/lib/utils";
 import { Card, CardContent, CardFooter, Separator } from "@elearning/ui";
 import { BriefcaseBusiness, Edit, Link, UsersIcon } from "lucide-react";
 import { cookies } from "next/headers";
+import FreelancerProposals from "./applications/page";
 
 
 const getData = async () => {
@@ -39,7 +40,7 @@ export default async function FreelancerDashboard({
                     <Edit className="size-10 text-muted-foreground" />
                     <div className="flex flex-col">
                     <div className="text-muted-foreground mb-1">Proposals</div>
-                    <h2 className="">{formatAbbreviate(data.applicationCount)}</h2>
+                    <h2 className="">{formatAbbreviate(data.proposalCount)}</h2>
                     </div>
                 </div>
                 </CardContent>
@@ -73,7 +74,7 @@ export default async function FreelancerDashboard({
                     <UsersIcon className="size-10 text-muted-foreground" />
                     <div className="flex flex-col">
                     <div className="text-muted-foreground mb-1">Reviews</div>
-                    <h2 className="">{formatAbbreviate(data.reviewcount)}</h2>
+                    <h2 className="">{formatAbbreviate(data.proposalReviewCount)}</h2>
                     </div>
                 </div>
                 </CardContent>
@@ -86,7 +87,7 @@ export default async function FreelancerDashboard({
             </Card>
             </div>      
             <div className="ml-6">
-            <EmployerJobs searchParams={searchParams} />        
+            <FreelancerProposals searchParams={searchParams} />        
             </div>
                 
         </>

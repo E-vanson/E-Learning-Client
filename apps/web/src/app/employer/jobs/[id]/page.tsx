@@ -4,6 +4,12 @@ import { Job } from "@elearning/lib/models";
 import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 import JobEditPage from "./job-edit-page";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Employer Jobs",
+  description: process.env.NEXT_PUBLIC_APP_DESC,
+};
 
 const getJob = async (id: string) => {
     console.log("Getting one job");

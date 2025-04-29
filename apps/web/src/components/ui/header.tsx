@@ -81,7 +81,7 @@ export default function Header({ user }: { user?: User | null }) {
             <DropdownMenuItem asChild>
               {!user ? null : user.jobRole === 'hybrid' ? (
                 <div className="flex flex-col">
-                  <Link href="/profile/freelancer/dashboard" className="p-2 hover:bg-muted">
+                  <Link href="/freelancer" className="p-2 hover:bg-muted">
                     Freelancer Dashboard
                   </Link>
                   <Link href="/employer" className="p-2 hover:bg-muted">
@@ -89,7 +89,7 @@ export default function Header({ user }: { user?: User | null }) {
                   </Link>
                 </div>
               ) : user.jobRole === 'freelancer' ? (
-                <Link href="/freelancer/dashboard/learnings">Freelancer Dashboard</Link>
+                <Link href="/freelancer">Freelancer Dashboard</Link>
               ) : user.jobRole === 'employer' ? (
                 <Link href="/employer/dashboard/learnings">My Learnings</Link>
               ) : null}
