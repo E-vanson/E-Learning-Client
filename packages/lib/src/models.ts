@@ -12,6 +12,8 @@ export type BudgetType = "fixed" | "hourly";
 export type ExperienceLevel = "beginner" | "intermediate" | "experienced"
 export type EstimatedTime = "1 Month" | "1 - 2 Months" | "3 Months" | "More Than 3 Months";
 export type ProposalStatus = "pending" | "accepted" | "rejected";
+export type ContractStatus = "draft" | "active" | "terminated" | "completed";
+
 
 export interface Page<T> {
   contents: T[];
@@ -120,13 +122,56 @@ export interface Post {
 export interface Proposal {
   id: number;
   job: Job;
-  freelancer?: Freelancer;
+  freelancer: Freelancer;
   cover_letter: string;
   bid_amount: number;
   estimated_time: EstimatedTime;
   status: ProposalStatus;
   file_attachment?: string;
   audit?: Audit;
+}
+
+export interface ProposalReview {
+  status: ProposalStatus;
+  employerFeedback: string;
+  reviewedAt: Date;
+  reviewedBy: string;
+}
+  
+export interface ContractTerms {
+  scopeOfWork: string;
+  paymentSchedule: string;
+  terminationClause: string;
+}
+
+export interface Milestone {
+  description: string;
+  dueDate: Date;
+  amount: number;
+  completed: boolean;
+}
+
+export enum Currency {
+    DOLLAR = '$',
+    POUND = '£',
+    EURO = '€',
+    KSH = 'ksh'
+}
+export interface Contract {
+  id: string;
+  employer: Employer;
+  freelancer: Freelancer;
+  job: Job;
+  jobId: string;
+  freelancerId: string;
+  employerId: string;
+  terms: ContractTerms;
+  startDate: Date;
+  endDate: Date;
+  paymentAmount: number;
+  paymentCurrency: Currency;
+  milestones: Milestone[];
+  status: ProposalStatus;
   }
 
 

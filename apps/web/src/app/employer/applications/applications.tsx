@@ -24,7 +24,7 @@ import {
 import { cookies } from "next/headers";
 import Link from "next/link";
 import ApplicationActionButtons from "./application-action-buttons";
-import { JobsFilter } from "../jobs/jobs-filter";
+import { ApplicationsFilter } from "./applications-filter";
 
 interface ApplicationJobProps {
   searchParams: { [key: string]: string | undefined };
@@ -58,10 +58,10 @@ export default async function EmployerProposals({ searchParams }: ApplicationJob
       );
     } else if (status === 'accepted') {
         return (
-        <span className="text-muted-foreground font-medium text-sm">Accepted</span>
+        <span className="text-teal font-medium text-sm">Accepted</span>
       );
     }            
-    return <span className="text-teal font-medium text-sm">Rejected</span>;
+    return <span className="text-destructive font-medium text-sm">Rejected</span>;
   };
 
   return (
@@ -69,7 +69,7 @@ export default async function EmployerProposals({ searchParams }: ApplicationJob
       <div className="flex justify-between mb-4">
         <h2>Job Applications</h2>
         <div className="flex">
-          <JobsFilter/>
+          <ApplicationsFilter/>
         </div>
         
       </div>      
@@ -94,7 +94,7 @@ export default async function EmployerProposals({ searchParams }: ApplicationJob
                   <div className="flex flex-col">
                     <h6 className="mb-0.5">{p.job.title ?? "(Untitled)"}</h6>
                     <span className="text-muted-foreground text-sm mb-2">
-                      By&nbsp;{p.freelancer?.headline}                            
+                      By&nbsp;{p.freelancer?.overview}                            
                     </span>  
                     <span className="text-muted-foreground text-sm mb-2">
                        Applied on &nbsp;-&nbsp;

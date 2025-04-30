@@ -137,6 +137,7 @@ export default function ApplyJobDialog({ job, freelancer }: ApplyJobDialogProps)
             jobId,
             {
                 ...values,
+                id: 0,
                 status: 'pending',
                 bid_amount: parseFloat(values.bid_amount),
                 file_attachment: fileUrl,
