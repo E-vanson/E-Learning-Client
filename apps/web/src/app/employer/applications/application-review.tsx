@@ -56,7 +56,7 @@ export function ProposalReviewForm({
       setIsSubmitting(true);
       const reviewPayload: ProposalReview = {
         ...data,
-        reviewedAt: new Date(),
+        reviewedAt: "2025-04-29 15:05:39.481+03",
         reviewedBy: proposal.id.toString(),
       };
       

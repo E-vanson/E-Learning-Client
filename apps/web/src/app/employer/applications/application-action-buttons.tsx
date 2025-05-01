@@ -14,6 +14,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenu,
   Button,
+  Checkbox,
   Select,
   SelectContent,
   SelectItem,
@@ -26,11 +27,11 @@ import { Controller,  useFieldArray,  useForm } from "react-hook-form";
 import { Input, Textarea } from "@elearning/ui/forms";
 import { DatePicker } from "@/components/ui/datepicker";
 import { LoaderCircle, MoreVertical, FileText } from "lucide-react";
-import { Currency, Proposal, ProposalStatus } from "@elearning/lib/models";
+import { Currency, Proposal, ProposalStatus, ContractStatus, Contract } from "@elearning/lib/models";
 import { parseErrorResponse } from "@/lib/parse-error-response";
 import { updateProposalStatus } from "@/lib/actions/proposal/update-proposal-status";
-import { createContract } from "@/lib/actions/contract/create-contract";
 import { ProposalReviewForm } from "./application-review";
+import { createContract } from "@/lib/actions/contract/create-contract";
 
 const contractSchema = z.object({
   terms: z.object({
@@ -40,18 +41,17 @@ const contractSchema = z.object({
   }),
   startDate: z.date(),
   endDate: z.date(),
+  status:z.enum(['draft', 'active', 'terminated', 'completed']),
+  paymentCurrency: z.nativeEnum(Currency),  
   paymentAmount: z.number().min(1, "Amount must be positive"),
-  paymentCurrency: z.enum(["$", "£", "€", "ksh"]),
   milestones: z.array(
     z.object({
       description: z.string().min(1, "Description required"),
       dueDate: z.date(),
       amount: z.number().min(1, "Amount must be positive"),
+      completed: z.boolean()
     })
-  ).min(1, "At least one milestone required"),
-  jobId: z.number().min(1),
-  freelancerId: z.string().min(1),
-  employerId: z.number().min(1),
+  ).min(1, "At least one milestone required"), 
 });
 
 type ContractFormData = z.infer<typeof contractSchema>;
@@ -61,6 +61,11 @@ export default function ApplicationActionButtons({ proposal }: { proposal: Propo
   const [statusDialogOpen, setStatusDialogOpen] = useState(false);
   const [contractDialogOpen, setContractDialogOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isCompleted, setIsCompleted] = useState(false);
+
+  const toggle = (completed:boolean) => {
+    completed ? setIsCompleted(false) : setIsCompleted(true);
+  }
   
   const { register, handleSubmit, control, formState: { errors }, reset } = useForm<ContractFormData>({
     resolver: zodResolver(contractSchema),
@@ -70,13 +75,16 @@ export default function ApplicationActionButtons({ proposal }: { proposal: Propo
         paymentSchedule: "",
         terminationClause: "",
       },
+      status: "draft",
       startDate: new Date(),
       endDate: new Date(),
-      paymentCurrency: "$",
+      paymentCurrency: Currency.DOLLAR,
+      paymentAmount: 1,
       milestones: [{
         description: "",
         dueDate: new Date(),
         amount: 0,
+        completed: false,
       }]
     }
   });
@@ -102,19 +110,31 @@ export default function ApplicationActionButtons({ proposal }: { proposal: Propo
     }
   };
 
-  const createContract = async (data: ContractFormData) => {
+  const handleCreateContract =  async (data: ContractFormData) => {
+    console.log("Submit conract button is clicked...", proposal)
     try {
       setIsSubmitting(true);
-      await createContract({
+      const contractPayload: Contract = {
         ...data,
-        jobId: proposal.job.id,
+        id: ' ',
+        jobId: proposal.job.id.toString(),
         freelancerId: proposal.freelancer.id,
-        employerId: proposal.job.employer.id,
+        employerId: proposal.job.employerId.toString(),        
+      }
+      const isContractCreated = await createContract(contractPayload);
+      if (isContractCreated) {
+        toast({ title: "Contract created successfully", variant: "success" });
+        setContractDialogOpen(false);
+        reset();
+      } else {
+        toast({
+        title: "Error creating contract",        
+        variant: "destructive",
       });
-      toast({ title: "Contract created successfully" });
-      setContractDialogOpen(false);
-      reset();
+      }      
+      
     } catch (error) {
+      console.log("The error: ", error)
       toast({
         title: "Error creating contract",
         description: parseErrorResponse(error),
@@ -169,7 +189,7 @@ export default function ApplicationActionButtons({ proposal }: { proposal: Propo
             <DialogTitle>Create Contract</DialogTitle>
           </DialogHeader>
           
-          <form onSubmit={handleSubmit(createContract)} className="space-y-4">
+          <form onSubmit={handleSubmit(handleCreateContract, (errors) => console.error("Form errors:", errors))} className="space-y-4">
             {/* Terms Section */}
             <div className="space-y-2">
               <label className="font-medium">Scope of Work</label>            
@@ -198,33 +218,23 @@ export default function ApplicationActionButtons({ proposal }: { proposal: Propo
             {/* Dates */}
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <label className="font-medium">Start Date</label>                
-                <Controller
-                  name="startDate"
-                  control={control}
-                  render={({ field }) => (
-                    <Calendar
-                      mode="single"
-                      selected={field.value}
-                      onSelect={field.onChange}
-                    />
-                  )}
-                />
+                <label className="font-medium">Start Date</label>  
+                <Input                  
+                  type="date"
+                  min={new Date().toISOString().split('T')[0]}
+                  {...register("startDate", { valueAsDate: true })}
+                  error={errors.startDate?.message}
+                />                
               </div>
 
               <div className="space-y-2">
-                <label className="font-medium">End Date</label>                
-                <Controller
-                  name="endDate"
-                  control={control}
-                  render={({ field }) => (
-                    <Calendar
-                      mode="single"
-                      selected={field.value}
-                      onSelect={field.onChange}
-                    />
-                  )}
-                />
+                <label className="font-medium">End Date</label>
+                <Input                  
+                  type="date"
+                  min={new Date().toISOString().split('T')[0]}
+                  {...register("endDate", { valueAsDate: true })}
+                  error={errors.endDate?.message}
+                />                
               </div>
             </div>
 
@@ -272,7 +282,13 @@ export default function ApplicationActionButtons({ proposal }: { proposal: Propo
                     </div>
                     <div>
                       <label className="font-medium">Due Date</label>
-                      <Controller
+                      <Input                                                
+                        type="date"
+                        min={new Date().toISOString().split('T')[0]}
+                        {...register(`milestones.${index}.dueDate`, { valueAsDate: true })}
+                        error={errors.milestones?.message}
+                      />
+                      {/* <Controller
                         name={`milestones.${index}.dueDate`}
                         control={control}
                         render={({ field }) => (
@@ -282,7 +298,7 @@ export default function ApplicationActionButtons({ proposal }: { proposal: Propo
                             onSelect={field.onChange}
                           />
                         )}
-                      />
+                      /> */}
                     </div>
                   </div>
                   <div>
@@ -292,6 +308,27 @@ export default function ApplicationActionButtons({ proposal }: { proposal: Propo
                       {...register(`milestones.${index}.amount`, { valueAsNumber: true })}
                     />
                   </div>
+                  <div className="flex items-center gap-2 mt-2">
+                    <Controller
+                      name={`milestones.${index}.completed`}
+                      control={control}
+                      render={({ field }) => (
+                        <Checkbox
+                          id={`completed-${index}`}
+                          className="rounded"
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        />
+                      )}
+                    />
+                    <label
+                      htmlFor={`completed-${index}`}
+                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                    >
+                      {field.completed ? "Unmark completed" : "Mark as completed"}
+                    </label>
+                  </div>
+    
                   <Button
                     type="button"
                     variant="ghost"
@@ -304,10 +341,38 @@ export default function ApplicationActionButtons({ proposal }: { proposal: Propo
               <Button
                 type="button"
                 variant="outline"
-                onClick={() => append({ description: "", dueDate: new Date(), amount: 0 })}
+                onClick={() => append({ description: "", dueDate: new Date(), amount: 0, completed: false })}
               >
                 Add Milestone
               </Button>
+            </div>
+
+            {/* Status */}
+            <div className="space-y-4">
+              <label className="font-medium">Status</label>            
+                <Controller
+                  name="status"
+                  control={control}
+                  render={({ field }) => (
+                  <Select 
+                      value={field.value} 
+                      onValueChange={field.onChange}
+                  >
+                      <SelectTrigger>
+                      <SelectValue placeholder="Select status" />
+                      </SelectTrigger>
+                      <SelectContent>
+                      <SelectItem value="draft">Draft</SelectItem>
+                      <SelectItem value="active">active</SelectItem>
+                      <SelectItem value="completed">completed</SelectItem>
+                      <SelectItem value="terminated">terminated</SelectItem>
+                      </SelectContent>
+                  </Select>
+                  )}
+                />
+                {errors.status && (
+                  <p className="text-red-500 text-sm">{errors.status.message}</p>
+                )}
             </div>
 
             <DialogFooter>

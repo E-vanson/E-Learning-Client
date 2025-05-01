@@ -5,7 +5,8 @@ import { API_URL_LOCAL } from "@/lib/constants";
 import { validateResponse } from "@/lib/validate-response";
 import { Contract } from "@elearning/lib/models";
 
-export async function createContract(body: Contract){
+export async function createContract(body: Contract) {
+    console.log("Inside create contract api")
     const session = await getSession();
 
     const url = `${API_URL_LOCAL}/contract`
@@ -19,14 +20,16 @@ export async function createContract(body: Contract){
             "Content-Type": "application/json",
             },
         });
+        console.log("The contract response: ", resp);
     
         if (!resp.ok) {
             const errorText = await resp.text();
             throw new Error(`HTTP ${resp.status}: ${errorText}`);
         }        
+                
+        return true
         
-        await validateResponse(resp);
-        return (await resp.json()) as Contract;
+        
     } catch (error) {
         console.error("Contract creation failed:", error);        
         throw error;        

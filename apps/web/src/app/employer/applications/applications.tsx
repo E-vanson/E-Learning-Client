@@ -49,7 +49,6 @@ const getProposals = async ({ searchParams }: ApplicationJobProps) => {
 
 export default async function EmployerProposals({ searchParams }: ApplicationJobProps) {
   const data = await getProposals({searchParams});
-  console.log("The data: ", data);
 
   const statusView = (status: ProposalStatus) => {
     if (status === "pending") {

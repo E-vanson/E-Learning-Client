@@ -229,7 +229,7 @@ export default function Header({ user }: { user?: User | null }) {
         </NavbarItem>
         <NavbarItem>
           <Link
-            href={"/pricing"}
+            href={"/about-us"}
             color="foreground"
             className="text-foreground hover:text-teal"
           >

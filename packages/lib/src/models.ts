@@ -98,6 +98,7 @@ export interface Post {
     deadline: string;
     experienceLevel?: ExperienceLevel;
     employer: Employer;
+    employerId: string;
     status: JobStatus;
     publishedAt?: string;
     audit?: Audit;
@@ -134,7 +135,7 @@ export interface Proposal {
 export interface ProposalReview {
   status: ProposalStatus;
   employerFeedback: string;
-  reviewedAt: Date;
+  reviewedAt: string;
   reviewedBy: string;
 }
   
@@ -159,9 +160,9 @@ export enum Currency {
 }
 export interface Contract {
   id: string;
-  employer: Employer;
-  freelancer: Freelancer;
-  job: Job;
+  employer?: Employer;
+  freelancer?: Freelancer;
+  job?: Job;
   jobId: string;
   freelancerId: string;
   employerId: string;
@@ -171,7 +172,7 @@ export interface Contract {
   paymentAmount: number;
   paymentCurrency: Currency;
   milestones: Milestone[];
-  status: ProposalStatus;
+  status: ContractStatus;
   }
 
 
