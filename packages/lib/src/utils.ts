@@ -76,7 +76,7 @@ export function formatCurrency(
 }
 
 export function debounce<I, R>(
-  callback: (input: I) => R | Promise<R>,
+  callback: (input?: I) => R | Promise<R>,
   timeout = 2000
 ) {
   if (typeof window === "undefined") {
@@ -84,7 +84,7 @@ export function debounce<I, R>(
   }
   let timer: NodeJS.Timeout;
 
-  return (input: I) => {
+  return (input?: I) => {
     timer && clearTimeout(timer);
     timer = setTimeout(() => {
       callback && callback(input);

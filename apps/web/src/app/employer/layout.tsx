@@ -45,7 +45,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
           icon: <ContactRound className="me-2" size={iconSize} />,
         })}
         {menuLink({
-          href: "/employer/conracts",
+          href: "/employer/contracts",
           title: "Contracts",
           icon: <Ticket className="me-2" size={iconSize} />,
         })}

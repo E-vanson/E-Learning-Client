@@ -173,6 +173,7 @@ export interface Contract {
   paymentCurrency: Currency;
   milestones: Milestone[];
   status: ContractStatus;
+  audit?: Audit;
   }
 
 

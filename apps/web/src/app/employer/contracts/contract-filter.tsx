@@ -12,7 +12,7 @@ import {
 import { Button } from "@elearning/ui"
 import { format, subDays } from "date-fns"
 
-export function ApplicationsFilter() {
+export function ContractsFilter() {
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
@@ -63,7 +63,7 @@ export function ApplicationsFilter() {
 
   return (
     <div className="flex flex-col gap-4 mb-6">
-      <div className="flex flex-col sm:flex-row gap-4 items-end">
+      <div className="flex flex-col sm:flex-row gap-4 justify-between">
         <div className="flex flex-col sm:flex-row gap-4 flex-1">
           <div className="w-full sm:w-[200px]">
             <Select 
@@ -98,7 +98,7 @@ export function ApplicationsFilter() {
         </div>        
       </div>
 
-      <div className="flex flex-col sm:flex-row gap-4 flex-1">
+      <div className="flex flex-col sm:flex-row gap-4">
         <div className="flex-1">
           <h4 className="text-sm font-medium mb-2">From</h4>
           <DatePicker
@@ -120,7 +120,7 @@ export function ApplicationsFilter() {
       </div>
 
       {(searchParams.get('start') || searchParams.get('end') || searchParams.get('status')) && (
-        <div className="w-full sm:w-auto">
+        <div className="flex justify-end gap-2">
           <Button
             variant="outline"
             onClick={() => {

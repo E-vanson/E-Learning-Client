@@ -3,12 +3,12 @@
 import { getSession } from "@/lib/auth";
 import { API_URL_LOCAL } from "@/lib/constants";
 import { validateResponse } from "@/lib/validate-response";
-import { Post } from "@elearning/lib/models";
+import { Contract } from "@elearning/lib/models";
 
-export async function updateJob(body: any) {
+export async function updateContract(body: any) {
   const session = await getSession();
 
-const url = `${API_URL_LOCAL}/employer/jobs/${body?.id}`;
+const url = `${API_URL_LOCAL}/contract/${body?.id}`;
     console.log("The url:  ", url);
 
 
@@ -25,17 +25,13 @@ const url = `${API_URL_LOCAL}/employer/jobs/${body?.id}`;
    if (!resp.ok) {
       const errorText = await resp.text();
       throw new Error(`HTTP ${resp.status}: ${errorText}`);
-    }
- 
-    console.log("The job update response: ", resp);
+    }     
 
-  await validateResponse(resp);
-
-  // revalidatePath(`/admin/posts/${body.id}`);
-
-      return (await resp.json()) as Post;
+    await validateResponse(resp);
+  
+      return true;
       } catch (error) {
-    console.error("Job update failed:", error);
+    console.error("contract update failed:", error);
     throw error;
   }
 }
