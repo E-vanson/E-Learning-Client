@@ -33,6 +33,7 @@ export default function ContractActionButtons({ contract }: { contract: Contract
   const handleDelete = async () => {
     try {
       setDeleting(true);
+      console.log("Here deleting the contract: ", contract)
       const isdeleted = await deleteContract(contract.id);
         if (isdeleted) {
           toast({

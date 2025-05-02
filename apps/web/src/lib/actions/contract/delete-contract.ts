@@ -9,7 +9,7 @@ export async function deleteContract(id: string) {
     console.log("Inside delete contract api")
     const session = await getSession();
 
-    const url = `${API_URL_LOCAL}/contract/${id}`
+    const url = `${API_URL_LOCAL}/contract/employer/${id}`
 
     try {
         const resp = await fetch(url, {
