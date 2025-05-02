@@ -23,7 +23,7 @@ const getData = async () => {
     },
   });
 
-  console.log("The response: ", resp);
+  console.log("The responseee: ", resp);
 
   await validateResponse(resp);
 

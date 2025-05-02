@@ -178,7 +178,7 @@ export default function ContractEditPage({ contract }: ContractEditPageProps) {
             <BreadcrumbSeparator />
             <BreadcrumbItem>
               <BreadcrumbPage>
-                {contract.id.slice(0, 8)}
+                {contract.terms.scopeOfWork.slice(0, 20)}
               </BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>

@@ -49,7 +49,7 @@ const getContracts = async ({ searchParams }: ContractJobProps) => {
 
 export default async function EmployerContractsTable({ searchParams }: ContractJobProps) {
   const data = await getContracts({ searchParams });
-  console.log("The contracts: ", )  
+  console.log("The contracts: ", data )  
 
   const statusView = (status: ContractStatus) => {
     if (status === "active") {

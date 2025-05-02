@@ -22,16 +22,21 @@ import {
   SelectValue,
   useToast,
   Calendar,
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+  TooltipProvider,
 } from "@elearning/ui";
 import { Controller,  useFieldArray,  useForm } from "react-hook-form";
 import { Input, Textarea } from "@elearning/ui/forms";
 import { DatePicker } from "@/components/ui/datepicker";
-import { LoaderCircle, MoreVertical, FileText } from "lucide-react";
+import { LoaderCircle, MoreVertical, FileText, Edit, View } from "lucide-react";
 import { Currency, Proposal, ProposalStatus, ContractStatus, Contract } from "@elearning/lib/models";
 import { parseErrorResponse } from "@/lib/parse-error-response";
 import { updateProposalStatus } from "@/lib/actions/proposal/update-proposal-status";
 import { ProposalReviewForm } from "./application-review";
 import { createContract } from "@/lib/actions/contract/create-contract";
+import Link from "next/link";
 
 const contractSchema = z.object({
   terms: z.object({
@@ -169,6 +174,19 @@ export default function ApplicationActionButtons({ proposal }: { proposal: Propo
       <ProposalReviewForm
         proposal={proposal}        
       />
+      <TooltipProvider>
+        <Tooltip delayDuration={300}>
+            <TooltipTrigger>
+              <Button variant="ghost" asChild size="icon">
+                <Link href={`/employer/applications/${proposal.id}`}>
+                  <View size={20} />
+                </Link>
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>View Proposal</TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+      
 
       {/* Create Contract Button */}
       {proposal.status === "accepted" && (
@@ -375,7 +393,7 @@ export default function ApplicationActionButtons({ proposal }: { proposal: Propo
                 )}
             </div>
 
-            <DialogFooter>
+            <DialogFooter>              
               <Button
                 type="button"
                 variant="ghost"
@@ -389,7 +407,7 @@ export default function ApplicationActionButtons({ proposal }: { proposal: Propo
               <Button type="submit" disabled={isSubmitting}>
                 {isSubmitting && <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />}
                 Create Contract
-              </Button>
+              </Button>               
             </DialogFooter>
           </form>
         </DialogContent>

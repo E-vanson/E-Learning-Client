@@ -89,7 +89,7 @@ export interface Post {
 
   export interface Job {
     id: number;
-    title?: string;
+    title: string;
     slug?: string;
     description?: string;
     skillsRequired?: string[];
