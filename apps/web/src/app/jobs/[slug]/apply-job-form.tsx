@@ -142,7 +142,9 @@ export default function ApplyJobDialog({ job, freelancer }: ApplyJobDialogProps)
                 bid_amount: parseFloat(values.bid_amount),
                 file_attachment: fileUrl,
                 job: job,
-                freelancer: freelancer
+                freelancer: freelancer,
+                reviewedAt: new Date().toISOString(),
+                reviewedBy: job.employerId
             },
             'true'
             );

@@ -129,7 +129,18 @@ export interface Proposal {
   estimated_time: EstimatedTime;
   status: ProposalStatus;
   file_attachment?: string;
+  employerFeedback?: string;
+  reviewedAt: string;
+  reviewedBy: string;
   audit?: Audit;
+}
+
+export interface ProposalFetcher {
+  getProposals: (params: ApplicationJobProps) => Promise<Page<Proposal>>;
+}
+
+export interface ApplicationJobProps {
+  searchParams: { [key: string]: string | undefined };
 }
 
 export interface ProposalReview {
@@ -162,10 +173,12 @@ export interface Contract {
   id: string;
   employer?: Employer;
   freelancer?: Freelancer;
+  proposal?: Proposal;
   job?: Job;
   jobId: string;
   freelancerId: string;
   employerId: string;
+  proposalId: string;
   terms: ContractTerms;
   startDate: Date;
   endDate: Date;

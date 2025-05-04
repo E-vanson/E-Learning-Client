@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
 import * as z from "zod";
@@ -23,9 +23,11 @@ import {
 } from "@elearning/ui";
 import { Input, Textarea } from "@elearning/ui/forms";
 import { LoaderCircle, MessageSquare, CheckCircle } from "lucide-react";
-import { Proposal, ProposalReview } from "@elearning/lib/models";
+import { Page, Proposal, ProposalReview } from "@elearning/lib/models";
 import { reviewProposal } from "@/lib/actions/proposal/review-proposal";
 import { parseErrorResponse } from "@/lib/parse-error-response";
+import { getProposalsData } from "@/lib/actions/proposal/get-proposals";
+import ApplicationActionButtons from "./application-action-buttons";
 
 const reviewSchema = z.object({
   status: z.enum(["pending", "accepted", "rejected"]),
@@ -34,11 +36,17 @@ const reviewSchema = z.object({
 
 type ReviewFormData = z.infer<typeof reviewSchema>;
 
+interface ProposalReviewProps {
+  proposal: Proposal;  
+}
+
+interface ApplicationJobProps {
+  searchParams: { [key: string]: string | undefined };
+}
+
 export function ProposalReviewForm({ 
-  proposal
-}: { 
-  proposal: Proposal;
-}) {
+  proposal,  
+}: ProposalReviewProps) {
   const { toast } = useToast();
   const [isDialogOpen, setDialogOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -68,7 +76,8 @@ export function ProposalReviewForm({
         variant: "success"
       });
       setDialogOpen(false);
-      reset();
+      reset();      
+      await getProposalsData();
     } catch (error) {
       toast({
         title: "Update failed",
@@ -126,7 +135,7 @@ export function ProposalReviewForm({
 
             <div className="space-y-2">
               <label className="font-medium">Feedback</label>            
-              <Textarea
+              <Textarea                
                 {...register("employerFeedback")}
                 placeholder="Provide feedback for the freelancer..."
               />

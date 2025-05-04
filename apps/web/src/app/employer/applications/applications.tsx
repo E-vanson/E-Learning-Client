@@ -47,6 +47,10 @@ const getProposals = async ({ searchParams }: ApplicationJobProps) => {
   return (await resp.json()) as Page<Proposal>;
 };
 
+export interface ProposalFetcher {
+  getProposals: (params: ApplicationJobProps) => Promise<Page<Proposal>>;
+}
+
 export default async function EmployerProposals({ searchParams }: ApplicationJobProps) {
   const data = await getProposals({ searchParams });
   console.log("The proposals", data);
@@ -106,7 +110,7 @@ export default async function EmployerProposals({ searchParams }: ApplicationJob
                   {statusView(p?.status)}
                 </span>
                 <TableCell>
-                  <ApplicationActionButtons proposal={p} />
+                  <ApplicationActionButtons proposal={p}/>
                 </TableCell>
               </TableRow>
             );

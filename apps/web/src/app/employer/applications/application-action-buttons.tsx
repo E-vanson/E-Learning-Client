@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+
 import {
   Dialog,
   DialogContent,
@@ -31,12 +32,13 @@ import { Controller,  useFieldArray,  useForm } from "react-hook-form";
 import { Input, Textarea } from "@elearning/ui/forms";
 import { DatePicker } from "@/components/ui/datepicker";
 import { LoaderCircle, MoreVertical, FileText, Edit, View } from "lucide-react";
-import { Currency, Proposal, ProposalStatus, ContractStatus, Contract } from "@elearning/lib/models";
+import { Currency, Proposal, ProposalStatus, ContractStatus, Contract, Page } from "@elearning/lib/models";
 import { parseErrorResponse } from "@/lib/parse-error-response";
 import { updateProposalStatus } from "@/lib/actions/proposal/update-proposal-status";
 import { ProposalReviewForm } from "./application-review";
 import { createContract } from "@/lib/actions/contract/create-contract";
 import Link from "next/link";
+import { ifContractExists } from "@/lib/actions/contract/contract-exists";
 
 const contractSchema = z.object({
   terms: z.object({
@@ -59,14 +61,22 @@ const contractSchema = z.object({
   ).min(1, "At least one milestone required"), 
 });
 
+interface ApplicationActionButtonsProps {
+  proposal: Proposal; 
+}
+
 type ContractFormData = z.infer<typeof contractSchema>;
 
-export default function ApplicationActionButtons({ proposal }: { proposal: Proposal }) {
+export default function ApplicationActionButtons({ 
+  proposal,  
+}: ApplicationActionButtonsProps) {
   const { toast } = useToast();
   const [statusDialogOpen, setStatusDialogOpen] = useState(false);
   const [contractDialogOpen, setContractDialogOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isCompleted, setIsCompleted] = useState(false);
+  const [hasContract, setHasContract] = useState(false);
+  const [contract, setContract] = useState<Contract | undefined>();
 
   const toggle = (completed:boolean) => {
     completed ? setIsCompleted(false) : setIsCompleted(true);
@@ -124,7 +134,8 @@ export default function ApplicationActionButtons({ proposal }: { proposal: Propo
         id: ' ',
         jobId: proposal.job.id.toString(),
         freelancerId: proposal.freelancer.id,
-        employerId: proposal.job.employerId.toString(),        
+        employerId: proposal.job.employerId.toString(),
+        proposalId: proposal.id.toString()
       }
       const isContractCreated = await createContract(contractPayload);
       if (isContractCreated) {
@@ -149,6 +160,23 @@ export default function ApplicationActionButtons({ proposal }: { proposal: Propo
       setIsSubmitting(false);
     }
   };
+
+  useEffect(() => {
+  const checkContractExistence = async () => {
+    if (proposal.status === "accepted") {
+      try {
+        const resp = await ifContractExists(proposal.id);
+        setHasContract(resp.exists);
+        setContract(resp.contract)
+      } catch (error) {
+        console.error("Error checking contract:", error);
+        setHasContract(false);
+      }
+    }
+  };
+
+  checkContractExistence();
+}, [proposal.status, proposal.id]);
 
   return (
     <div className="flex gap-2">
@@ -190,15 +218,25 @@ export default function ApplicationActionButtons({ proposal }: { proposal: Propo
 
       {/* Create Contract Button */}
       {proposal.status === "accepted" && (
-        <Button
-          variant='secondary'
-          size="sm"
-          onClick={() => setContractDialogOpen(true)}
-        >
-          <FileText className="mr-2 h-4 w-4" />
-          Create Contract
-        </Button>
+        hasContract ? (
+          <Link href={`/employer/contracts/${contract?.id}`} passHref>
+            <Button variant="secondary" size="sm">
+              <FileText className="mr-2 h-4 w-4" />
+              Edit Contract
+            </Button>
+          </Link>
+        ) : (
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={() => setContractDialogOpen(true)}
+          >
+            <FileText className="mr-2 h-4 w-4" />
+            Create Contract
+          </Button>
+        )
       )}
+
 
       {/* Contract Creation Dialog */}
       <Dialog open={contractDialogOpen} onOpenChange={setContractDialogOpen}>

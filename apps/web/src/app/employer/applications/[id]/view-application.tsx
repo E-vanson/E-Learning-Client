@@ -65,7 +65,7 @@ export default function ProposalViewPage({
           <BreadcrumbList>
             <BreadcrumbItem>
               <BreadcrumbLink asChild>
-                <Link href="/proposals">Proposals</Link>
+                <Link href="/employer/applications">Proposals</Link>
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
@@ -123,6 +123,14 @@ export default function ProposalViewPage({
                 readOnly
               />
             </div>
+            <div>
+              <label className="block text-sm font-medium mb-2">Employer Feedback</label>
+              <Input
+                value={proposal.employerFeedback}
+                readOnly
+              />
+            </div>          
+                      
           </div>
 
           {/* Cover Letter */}
